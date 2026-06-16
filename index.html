@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REMADE — 반영구 아틀리에</title>
+<meta name="description" content="눈썹을 그리지 않습니다. 인상을 다시 짓습니다. 전국 29개 지점, 네이버 만족도 최우수 반영구 아틀리에.">
+<meta name="theme-color" content="#070A07">
+<meta name="robots" content="index,follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="REMADE">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="REMADE — 반영구 아틀리에">
+<meta property="og:description" content="눈썹을 그리지 않습니다. 인상을 다시 짓습니다.">
+<!-- og:image / og:url 은 배포 도메인 확정 후 절대경로(https://…)로 교체하세요 -->
+<meta property="og:image" content="./assets/campaign.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="REMADE — 반영구 아틀리에">
+<meta name="twitter:description" content="눈썹을 그리지 않습니다. 인상을 다시 짓습니다.">
+<meta name="twitter:image" content="./assets/campaign.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Hahmlet:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root{
+    --canvas:#070A07;
+    --panel:#0D110D;
+    --gallery:#EBEDE6;          /* 흰 벽 갤러리 섹션 */
+    --gallery-ink:#0C140E;
+    --green:#2BA350;
+    --green-bright:#62DC8C;
+    --paper:#ECF1EA;
+    --muted:#7E8C7E;
+    --muted-d:#5a6a5c;
+    --line:rgba(132,148,132,.16);
+    --line-d:rgba(12,20,14,.16);
+    --lat:"Cormorant Garamond",serif;
+    --sans:"Pretendard","Pretendard Variable",-apple-system,sans-serif;
+    --display:"Pretendard","Pretendard Variable",-apple-system,sans-serif;
+    --display-ko:"Hahmlet","Pretendard","Pretendard Variable",-apple-system,serif;
+    --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  html{overflow-x:clip}
+  body{background:var(--canvas);color:var(--paper);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.62;overflow-x:clip}
+  a{color:inherit;text-decoration:none}
+  ::selection{background:var(--green);color:#04120A}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 36px}
+
+  /* a11y — visible keyboard focus */
+  :focus-visible{outline:2px solid var(--green-bright);outline-offset:3px;border-radius:2px}
+  a:focus:not(:focus-visible),button:focus:not(:focus-visible){outline:none}
+  .skip-link{position:fixed;left:12px;top:-60px;z-index:200;background:var(--green);color:#04120A;padding:10px 16px;border-radius:0 0 4px 4px;font-size:13px;font-weight:600;transition:top .2s}
+  .skip-link:focus{top:0}
+
+  /* bilingual label grammar */
+  .label{display:flex;align-items:baseline;gap:14px;font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--green-bright);font-weight:600}
+  .label .ko{font-family:var(--sans);font-size:12.5px;letter-spacing:.16em;color:var(--muted);text-transform:none;font-weight:500}
+  /* eyebrow hair-stroke motif (echoes the R logo) */
+  .label::before{content:"";width:22px;height:13px;align-self:center;border-radius:1px;
+    background:repeating-linear-gradient(106deg,var(--green) 0 1.6px,transparent 1.6px 5px)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 1.1s cubic-bezier(.16,.7,.2,1),transform 1.1s cubic-bezier(.16,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* NAV */
+  nav{position:fixed;inset:0 0 auto 0;z-index:60;transition:background .4s,border-color .4s,opacity .5s,transform .5s;border-bottom:1px solid transparent;opacity:0;transform:translateY(-14px);pointer-events:none}
+  nav.show{opacity:1;transform:none;pointer-events:auto}
+  nav.solid{background:rgba(7,10,7,.8);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:80px;max-width:1240px;margin:0 auto;padding:0 36px}
+  .brand{font-family:var(--lat);font-size:27px;font-weight:600;letter-spacing:.24em;padding-left:.24em;color:var(--green-bright)}
+  .nav-mid{display:flex;gap:36px;font-size:13.5px;color:#c2cdc1}
+  .nav-mid a{position:relative;transition:color .25s}
+  .nav-mid a:hover{color:#fff}
+  .nav-right{display:flex;align-items:center;gap:20px}
+  .nav-cta{font-size:13px;border:1px solid var(--green);color:var(--green-bright);padding:9px 18px;border-radius:2px;transition:.25s}
+  .nav-cta:hover{background:var(--green);color:#04120A}
+  .burger{display:none;background:none;border:0;color:var(--paper);font-size:22px;cursor:pointer;width:44px;height:44px;align-items:center;justify-content:center;border-radius:4px;transition:color .25s}
+  .burger:hover{color:var(--green-bright)}
+  /* mobile dropdown menu */
+  .mobile-menu{display:none;flex-direction:column;background:rgba(7,10,7,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav.open .mobile-menu{display:flex}
+  .mobile-menu a{padding:16px 36px;font-size:15px;color:#dfe6de;border-top:1px solid var(--line);transition:background .2s,color .2s}
+  .mobile-menu a:hover,.mobile-menu a:focus-visible{background:rgba(43,163,80,.1);color:#fff}
+
+  /* BUTTONS */
+  .cta-row{display:flex;gap:13px;flex-wrap:wrap}
+  .btn{font-size:14.5px;font-weight:500;padding:14px 26px;border-radius:2px;transition:.28s;display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:1px solid transparent}
+  .btn-primary{background:var(--green);color:#04120A}
+  .btn-primary:hover{background:var(--green-bright);transform:translateY(-2px)}
+  .btn-ghost{border-color:var(--line);color:#dfe6de}
+  .btn-ghost:hover{border-color:var(--green);color:#fff}
+
+  /* INTRO — scroll word-cycle: REMADE→Brows→Lips→Brand (bg crossfades, word swaps cleanly) */
+  .intro{position:relative;height:380vh;min-height:2100px}
+  .intro-stage{position:sticky;top:0;height:100vh;height:100svh;min-height:600px;overflow:hidden}
+  .h-seq{position:absolute;inset:0}
+  /* background layer — smooth color crossfade */
+  .h-bg{position:absolute;inset:0;opacity:0;will-change:opacity}
+  .h-bg:first-child{opacity:1}
+  .h-bg.s-green{background:radial-gradient(96% 84% at 50% 42%,#24E063 0%,#15C44D 34%,#0E9C3E 63%,#0A6A2C 100%);box-shadow:inset 0 0 210px 54px rgba(6,40,20,.55),inset 0 0 30px 2px rgba(6,28,15,.45)}
+  .h-bg.s-green::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(66% 52% at 50% 41%,rgba(122,255,166,.34),rgba(122,255,166,0) 66%),radial-gradient(118% 72% at 50% -8%,rgba(205,255,222,.4),rgba(205,255,222,0) 60%)}
+  .h-bg.s-black{background:var(--canvas)}
+  .h-bg.s-black::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 50% at 50% 46%,rgba(43,163,80,.20),transparent 70%)}
+  /* word layer — clean swap (slide + quick fade), one word readable at a time */
+  .h-word{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;will-change:opacity,transform;font-family:var(--lat);font-weight:600;font-size:clamp(40px,8.5vw,124px);letter-spacing:.06em;padding-left:.06em;white-space:nowrap}
+  .h-word.first{opacity:1}
+  .h-word.ink-dark{color:#06210f;text-shadow:0 1px 0 rgba(255,255,255,.14)}
+  .h-word.ink-green{color:#3ED877;text-shadow:0 0 44px rgba(98,220,140,.28)}
+  .scroll-hint{position:absolute;bottom:34px;left:50%;transform:translateX(-50%);z-index:5;font-size:11px;letter-spacing:.32em;color:#0a2a14;display:flex;gap:10px;align-items:center}
+  .scroll-hint span{letter-spacing:.16em}
+
+  /* SECTION shell */
+  section{padding:130px 0;position:relative}
+  .sec-head{margin-bottom:60px}
+  .sec-head h2{font-family:var(--lat);font-weight:600;font-size:clamp(34px,5.2vw,64px);line-height:1.04;margin:22px 0 0;letter-spacing:.01em}
+  .sec-head h2,.port-head h2,.story h2,.founder h2{color:var(--green-bright)}
+  .sec-head p{color:var(--muted);font-size:15.5px;max-width:520px;margin-top:18px}
+
+  /* MANIFESTO — all black, green lightbox */
+  .manifesto{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .manifesto .wrap{display:grid;grid-template-columns:1.25fr .75fr;gap:64px;align-items:center}
+  .manifesto blockquote{font-family:var(--display-ko);font-weight:700;font-size:clamp(28px,4vw,50px);line-height:1.32;letter-spacing:-.01em;color:var(--green-bright)}
+  .manifesto blockquote .g{color:#fff}
+  .lightwall{aspect-ratio:1/1.05;border:1px solid rgba(98,220,140,.28);border-radius:3px;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 50% 56%,rgba(98,220,140,.45),rgba(43,163,80,.2) 44%,rgba(12,40,22,.12) 78%,#070A07 100%)}
+  .lightwall::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background-image:var(--grain);background-size:140px 140px;opacity:.38;mix-blend-mode:overlay}
+  .lightwall .m{position:absolute;left:0;right:0;bottom:15%;z-index:2;text-align:center;font-family:var(--lat);font-size:clamp(28px,4vw,46px);letter-spacing:.2em;font-weight:600;color:#06210F;padding-left:.2em}
+  /* site-wide subtle film grain */
+  body::after{content:"";position:fixed;inset:0;z-index:130;pointer-events:none;background-image:var(--grain);background-size:140px 140px;opacity:.07;mix-blend-mode:overlay}
+
+  /* MENU — editorial index: number · name · time */
+  .menu-list{border-top:1px solid var(--line)}
+  .menu-item{display:grid;grid-template-columns:auto 1fr auto;gap:30px;align-items:baseline;padding:26px 6px;border-bottom:1px solid var(--line);transition:padding .45s cubic-bezier(.16,.7,.2,1),background .45s}
+  .menu-item:hover{background:linear-gradient(90deg,rgba(43,163,80,.05),transparent);padding-left:18px}
+  .menu-no{font-family:var(--lat);font-size:15px;color:var(--green);font-style:italic;font-variant-numeric:tabular-nums}
+  .menu-name{font-family:var(--display);font-size:clamp(21px,2.5vw,30px);font-weight:600;letter-spacing:-.025em}
+  .menu-meta{font-family:var(--lat);font-style:italic;font-size:clamp(17px,1.7vw,21px);color:#9fab9e;white-space:nowrap}
+
+  /* PORTFOLIO — gallery wall (asymmetric masonry) */
+  .port-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:44px;flex-wrap:wrap}
+  .gallery-wall{column-count:3;column-gap:18px}
+  .frame{break-inside:avoid;margin:0 0 18px}
+  .frame .img{border:1px solid var(--line);border-radius:3px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(150deg,#0e150e,#0a2113);transition:border-color .4s,transform .4s}
+  .frame:hover .img{border-color:rgba(98,220,140,.45)}
+  .frame .img::after{content:"";position:absolute;inset:0;background:radial-gradient(75% 55% at 50% 28%,rgba(98,220,140,.13),transparent 70%)}
+  /* before/after center hairline */
+  .frame .img::before{content:"";position:absolute;top:16%;bottom:16%;left:50%;width:1px;z-index:1;background:linear-gradient(rgba(98,220,140,0),rgba(98,220,140,.22),rgba(98,220,140,0))}
+  .frame .img.tall{aspect-ratio:3/4}.frame .img.mid{aspect-ratio:1/1}.frame .img.wide{aspect-ratio:4/3}
+  .frame .ph{position:relative;z-index:1;font-family:var(--lat);font-style:italic;font-weight:600;font-size:clamp(34px,3.6vw,50px);color:rgba(98,220,140,.20)}
+  .frame .tag{position:absolute;left:14px;bottom:14px;z-index:2;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--green-bright);border:1px solid rgba(98,220,140,.4);padding:4px 9px;border-radius:2px;backdrop-filter:blur(4px)}
+  .frame .ba{position:absolute;right:14px;bottom:16px;z-index:2;font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:rgba(206,221,204,.42)}
+
+  /* LOCATOR */
+  .locator{background:var(--panel);border-top:1px solid var(--line)}
+  .loc-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px}
+  .map{position:relative;border:1px solid var(--line);border-radius:4px;min-height:440px;background:radial-gradient(85% 75% at 60% 35%,rgba(43,163,80,.16),transparent 64%),var(--canvas);overflow:hidden}
+  .map svg{position:absolute;inset:0;width:100%;height:100%}
+  .kr-map{padding:24px}
+  .kr-land path{fill:rgba(43,163,80,.10);stroke:rgba(98,220,140,.28);stroke-width:1.1;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+  .kr-pins .halo{fill:rgba(98,220,140,.16)}
+  .kr-pins .dot{fill:var(--green-bright);filter:drop-shadow(0 0 5px rgba(98,220,140,.9))}
+  @media(prefers-reduced-motion:no-preference){
+    .kr-pins .halo{transform-box:fill-box;transform-origin:center;animation:pinpulse 2.6s ease-in-out infinite}
+    .kr-pins g:nth-child(2) .halo{animation-delay:.6s}.kr-pins g:nth-child(3) .halo{animation-delay:1.1s}
+    .kr-pins g:nth-child(5) .halo{animation-delay:1.5s}.kr-pins g:nth-child(7) .halo{animation-delay:.9s}
+  }
+  @keyframes pinpulse{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.8);opacity:.12}}
+  .pin::after{content:attr(data-label);position:absolute;left:16px;top:-4px;font-size:11px;color:#cdd6cc;white-space:nowrap}
+  .loc-note{border-top:1px solid var(--line);padding-top:24px}
+  .loc-note p{font-family:var(--display);font-size:19px;color:var(--paper);margin-bottom:14px}
+  .loc-note p b{color:var(--green-bright)}
+  .branch-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+  .branch-links a{font-size:13px;color:#cdd6cc;border:1px solid var(--line);border-radius:3px;padding:9px 13px;transition:.2s}
+  .branch-links a:hover{border-color:var(--green);color:var(--green-bright)}
+  /* CAMPAIGN */
+  .campaign{padding:96px 0}
+  .campaign .label{margin-bottom:30px}
+  .campaign-fig{margin:0}
+  .campaign-img{width:100%;height:auto;display:block;border:1px solid var(--line);border-radius:4px}
+
+  /* STORY / YOUTUBE */
+  .story .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
+  .yt{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:linear-gradient(135deg,#0c150c,#0a2414);display:flex;align-items:center;justify-content:center;transition:.3s}
+  .yt:hover{border-color:var(--green)}
+  .yt .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(.92) brightness(.82);transition:transform .5s,filter .3s}
+  .yt:hover .thumb{transform:scale(1.04);filter:saturate(1) brightness(.9)}
+  .yt::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(7,10,7,.15),rgba(7,10,7,.78))}
+  .yt .play{position:relative;z-index:2;width:66px;height:66px;border-radius:50%;background:rgba(7,10,7,.45);border:1px solid var(--green-bright);display:flex;align-items:center;justify-content:center;backdrop-filter:blur(2px);transition:background .3s,transform .3s}
+  .yt:hover .play{background:rgba(43,163,80,.5);transform:scale(1.06)}
+  .yt .play::after{content:"";border-left:18px solid var(--green-bright);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+  .yt .ch{position:absolute;left:18px;bottom:16px;right:18px;z-index:2;font-size:13px;color:#cdd6cc}.yt .ch b{display:block;font-family:var(--display);font-size:17px;color:#fff;font-weight:600;margin-bottom:2px}
+
+  /* FOUNDER / B2B */
+  .founder{background:linear-gradient(180deg,#0a1f12,#070f08);border-top:1px solid rgba(98,220,140,.16);border-bottom:1px solid rgba(98,220,140,.16);text-align:center}
+  .founder .wrap{max-width:820px}
+  .founder .label{justify-content:center}
+  .founder h2{font-family:var(--display-ko);font-weight:700;font-size:clamp(28px,4.8vw,56px);line-height:1.16;margin:24px 0 22px;letter-spacing:-.01em}
+  .founder h2 .g{color:#fff}
+  .founder .cta-row{justify-content:center}
+
+  /* FOOTER — Typography-Seoul-style editorial, all black + green */
+  .ts-footer{position:relative;background:var(--canvas);color:var(--paper);padding:104px 0 38px;overflow:hidden;border-top:1px solid var(--line)}
+  /* ambient green glow — bottom + both sides (store-lightbox mood) */
+  .ts-footer::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;transform-origin:50% 116%;will-change:transform,opacity;animation:footGlow 9s ease-in-out infinite alternate;
+    background:
+      radial-gradient(145% 70% at 50% 124%, rgba(170,246,108,.55), rgba(120,230,120,.28) 34%, rgba(43,163,80,.10) 56%, transparent 72%),
+      radial-gradient(52% 88% at -6% 110%, rgba(170,246,108,.42), rgba(98,220,140,.16) 45%, transparent 64%),
+      radial-gradient(52% 88% at 106% 110%, rgba(170,246,108,.42), rgba(98,220,140,.16) 45%, transparent 64%);}
+  @keyframes footGlow{from{transform:scale(1);opacity:.78}to{transform:scale(1.13);opacity:1}}
+  .ts-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;pointer-events:none;z-index:0;
+    background:linear-gradient(90deg,transparent,rgba(170,246,108,.8) 28%,rgba(205,255,150,1) 50%,rgba(170,246,108,.8) 72%,transparent);
+    filter:blur(.3px);opacity:1}
+  .ts-footer .wrap{position:relative;z-index:1}
+  .foot-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;border-bottom:1px solid var(--line);padding-bottom:60px}
+  .fc .label{margin-bottom:20px}
+  .fc a,.fc span{display:block;font-size:14px;color:#9aa89a;margin-bottom:10px;transition:color .2s}
+  .fc a:hover{color:var(--green-bright)}
+  .foot-wordmark{font-family:var(--lat);font-weight:600;font-size:clamp(46px,19vw,250px);line-height:.9;letter-spacing:.02em;color:var(--green-bright);text-align:center;white-space:nowrap;padding:34px 0 6px;position:relative;text-shadow:0 0 60px rgba(98,220,140,.25)}
+  .foot-wordmark .foot-mark{display:inline-block;width:.26em;height:.28em;vertical-align:baseline;margin-left:.04em;border-radius:1px;background:repeating-linear-gradient(106deg,var(--green-bright) 0 .03em,transparent .03em .085em)}
+  /* velnoc demo badge (floating, bottom-left) */
+  .demo-flag{position:fixed;left:16px;bottom:16px;z-index:90;display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.04em;color:#94a294;background:rgba(13,17,13,.9);border:1px solid var(--line);border-radius:30px;padding:8px 15px;backdrop-filter:blur(8px);transition:border-color .25s,color .25s,transform .25s}
+  .demo-flag::before{content:"";width:14px;height:9px;border-radius:1px;background:repeating-linear-gradient(106deg,var(--green-bright) 0 1.3px,transparent 1.3px 4px)}
+  .demo-flag b{color:var(--green-bright);font-weight:600}
+  .demo-flag:hover{border-color:var(--green);color:#cdd6cc;transform:translateY(-1px)}
+  .foot-bottom{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;font-size:12px;color:#90a090;border-top:1px solid var(--line);padding-top:26px}
+  .foot-bottom a{color:#9aa89a;transition:color .2s}.foot-bottom a:hover{color:var(--green-bright)}
+
+  @media(max-width:920px){
+    .nav-mid{display:none}.burger{display:block}
+    .manifesto .wrap,.loc-grid,.story .wrap{grid-template-columns:1fr;gap:34px}
+    .lightwall{max-width:300px;margin:0 auto}
+    .foot-cols{grid-template-columns:1fr 1fr;gap:26px}
+    .foot-wordmark{letter-spacing:.01em}
+    section{padding:90px 0}
+    .intro{height:340vh;min-height:1800px}
+    .h-word{letter-spacing:.03em;padding-left:.03em}
+    .gallery-wall{column-count:2;column-gap:14px}
+    .frame{margin-bottom:14px}
+    .menu-item{gap:18px;padding:22px 4px}
+  }
+  @media(max-width:560px){
+    .gallery-wall{column-count:1}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .reveal{transition:none;opacity:1;transform:none}
+    html{scroll-behavior:auto}
+    nav{opacity:1;transform:none;pointer-events:auto}
+    .intro{height:auto;min-height:0}
+    .intro-stage{position:static;height:100svh;min-height:560px}
+    .scroll-hint{display:none}
+    .h-bg{opacity:0}.h-bg:first-child{opacity:1}
+    .h-word{opacity:0}.h-word.first{opacity:1;transform:none}
+    .ts-footer::before{animation:none}
+  }
+</style>
+</head>
+<body>
+<a href="#menu" class="skip-link">본문 바로가기</a>
+<a class="demo-flag" href="https://site.velnoc.com/" target="_blank" rel="noopener" aria-label="velnoc 데모 디자인"><b>velnoc</b> 데모 디자인</a>
+
+<nav id="nav">
+  <div class="nav-in">
+    <a href="#top" class="brand" aria-label="REMADE 홈">R</a>
+    <div class="nav-mid">
+      <a href="#menu">Treatments</a><a href="#locator">Studios</a><a href="#story">Brand</a><a href="#founder">Partners</a>
+    </div>
+    <div class="nav-right">
+      <a href="#booking" class="nav-cta">Book</a>
+      <button class="burger" id="burger" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#menu">Treatments</a>
+    <a href="#locator">Studios</a>
+    <a href="#story">Brand</a>
+    <a href="#founder">Partners</a>
+    <a href="#booking">Book</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="intro" id="top">
+  <div class="intro-stage">
+    <div class="h-seq" id="hSeq">
+      <div class="h-bg s-green"></div>
+      <div class="h-bg s-black"></div>
+      <div class="h-bg s-green"></div>
+      <div class="h-bg s-black"></div>
+      <div class="h-word ink-dark first">REMADE</div>
+      <div class="h-word ink-green">Brows</div>
+      <div class="h-word ink-dark">Lips</div>
+      <div class="h-word ink-green">&amp;Brand</div>
+    </div>
+    <div class="scroll-hint" id="scrollHint">SCROLL <span>아래로</span></div>
+  </div>
+</header>
+
+<!-- MANIFESTO (gallery white) -->
+<section class="manifesto reveal">
+  <div class="wrap">
+    <div>
+      <div class="label">Philosophy</div>
+      <blockquote style="margin-top:24px">눈썹을 그리지 않습니다.<br><span class="g">인상을 다시 짓습니다.</span></blockquote>
+    </div>
+    <div class="lightwall" aria-hidden="true"><span class="m">REMADE</span></div>
+  </div>
+</section>
+
+<!-- CAMPAIGN -->
+<section class="campaign reveal">
+  <div class="wrap">
+    <div class="label">Campaign <span class="ko">REMADE.SON</span></div>
+    <figure class="campaign-fig">
+      <img class="campaign-img" src="./assets/campaign.jpg" alt="REMADE 캠페인 비주얼" width="1280" height="1024" loading="lazy" decoding="async">
+    </figure>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="label">Treatments</div>
+      <h2>Brows, Lips &amp; Hairline</h2>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item"><span class="menu-no">01</span><span class="menu-name">자연 결 눈썹</span><span class="menu-meta">90′</span></div>
+      <div class="menu-item"><span class="menu-no">02</span><span class="menu-name">콤보 브로우</span><span class="menu-meta">100′</span></div>
+      <div class="menu-item"><span class="menu-no">03</span><span class="menu-name">섀도우 브로우</span><span class="menu-meta">90′</span></div>
+      <div class="menu-item"><span class="menu-no">04</span><span class="menu-name">입술 · 아이라인</span><span class="menu-meta">80′</span></div>
+      <div class="menu-item"><span class="menu-no">05</span><span class="menu-name">헤어라인</span><span class="menu-meta">70′</span></div>
+      <div class="menu-item"><span class="menu-no">06</span><span class="menu-name">리터치</span><span class="menu-meta">회원 전용</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="gallery" class="reveal" style="padding-top:24px">
+  <div class="wrap">
+    <div class="port-head">
+      <div>
+        <div class="label">Portfolio</div>
+        <h2 style="font-family:var(--lat);font-weight:600;font-size:clamp(34px,5.2vw,64px);margin-top:20px;letter-spacing:.01em;line-height:1.04">Before &amp; After</h2>
+      </div>
+      <p style="color:var(--muted);font-size:13.5px;max-width:280px">동의받은 실제 작업입니다.</p>
+    </div>
+    <div class="gallery-wall">
+      <div class="frame"><div class="img tall"><span class="ph">01</span><span class="tag">자연 결</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img mid"><span class="ph">02</span><span class="tag">콤보</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img wide"><span class="ph">03</span><span class="tag">입술</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img mid"><span class="ph">04</span><span class="tag">섀도우</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img tall"><span class="ph">05</span><span class="tag">헤어라인</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img wide"><span class="ph">06</span><span class="tag">리터치</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img mid"><span class="ph">07</span><span class="tag">아이라인</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img tall"><span class="ph">08</span><span class="tag">결 · 18M</span><span class="ba">Before · After</span></div></div>
+      <div class="frame"><div class="img mid"><span class="ph">09</span><span class="tag">톤업</span><span class="ba">Before · After</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATOR -->
+<section id="locator" class="locator reveal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="label">Find a Studio</div>
+      <h2>29 Studios Nationwide</h2>
+    </div>
+    <div class="loc-grid">
+      <div class="map" aria-hidden="true">
+        <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid meet" class="kr-map" role="img" aria-label="전국 지점 지도">
+<!-- South Korea map © simplemaps.com — free for commercial use -->
+<g class="kr-land">
+<path id="KR42" d="M724.4 389.1l-1.3 0-4.5-1.1-4.4 2-9.4-3.5 1.5-4-0.4-3.8-1.2-4.2-0.4-4.7 1.9-4.5 1.4-4.3-1.1-1.2-1.1-1.1 0.5-3.9-9.9-0.7-2.9-1.7-3.1-1.3-1.3-3.1-1-3.6-4.5-2.2-2.8-4.2-0.6-5.5 1-4.2 2.3-1.7 2.6-1 3.9 1.6 3.2-2.4-1.3-3.9-4.2-2.6-4.7-1.1-3.6 2-3.6 0.9-5-2.3-5.3-0.9-1.8 0.7-1.5-0.2-1.1-1.5-1.7-0.7-3.8 3-4.1 1.6-0.3-3 0.3-2.9-2.3-1.2-2.6-0.6-1.9-3.4-3.7-0.3-3.7 1.8-2.5 3 0.9 4.2-0.4 3.9-0.8 3.6-3.5-0.3-4-0.9-3.4-1.4-3.5-1.9-2.7-1.7-2.7-1.2-3.5-0.4-3.5-0.7-3.6-2.3-3.2-2.5-3.2 0.1-3.3 1-2.9 0.5-2.5 0.2-1-2.2-2.7-2.8 0.3-2.5-1.4-1.4-6.4 0.7-4.1 1.4-1.3 0.6-1.2-0.1-1.9-1-1.5-1.7 2.3-3.6 3.9-2.8 1.6-3.6-2.4-0.7-7.8-1.2-7.5-2.7-3.2 2.4-2.6 1.4-3.3-0.7-2.7 2.1-4.5 2.5-4.5 1.1-1.7-2.4 0-3.6-5.1-5.5-6.9 2.4-2.6 3.1 0.8 8.3-2.8 1.9-0.9 1.1-1.1 0.9-1.1-0.6-1.2-0.7-4.1-0.3-4.1 1 1.1-8.2-14.4 2-14.3 3.9 7.3-13.6 6.1-14.8 8.3-17.9 1.1-3.8-0.8-3.9 1.8-3.1 2.5-3 2.7-1.1 1.4-3.1-1.6-2.6-2-1.7-3.2-0.4-3.3-1.3-4.6-0.6-7.6-4.2-3.4-1.4-3.4-2.2-3.8-0.6-3.6 1.1-3-2.5 0.2-2.8 1.4-2.9 0.6-3.4 0-3.4-3.5 1.1-1.7-2.1 4-4.6-0.7-3.1-1.1-3.1 0.8-2.3 0-2.8-0.3-2.7 6.9-5.1 2.8-0.9 1.5-2.4 0.7-6.9-3.2-5-2.6-0.5-2.5-1.2-1.9-5-3-0.2-3.2 0.2-3.5-2.5-1.7-4.6-0.7-8.1-1.3-4.1-0.9-0.7-1 0.1-0.8 0.7-0.9 0.2-2.3-1.7-5.6 2-5.2-1.2-2.1-1.3-2.2-2 0-3.2 1-3.1 0.8-1.1 0.5-1.2-0.9-0.7-1.1-0.3-1.1 0.2-1 0.8-1.8 2.3-2 2.1-3 0.5-2.8-1.9-0.5-1.7-0.2-1.7-1-0.6-1 1.1-0.3 1.8-0.1 5.7-1.7 2.7-5-2.3-4.6-4.2-1.6-1.6-1.6 0.2-1.5-2.2-1-2.8-1.2-1.5-1.5-1.2-1.1-2.7-2-1.3-4.8-3.1-2.7-1.3 0.8-1 7.4-6.1 8.7-5.4 2.5-1.1 5.5-2.2 1-0.4 6.1-0.7 2.7-0.3 4.3 0.5 8.4-0.8 1.5-0.1 6.8-0.6 12.9 3.9 3.6-0.3 0.5-0.1 0.4-0.1 7.5-2.3 15.7-1.3 1.6-0.2 8.9-0.8 1.1 0.8 1.7 2.5 1.7 1.7 1.9 0.5 8.9-1.9 14.2 0.8 9.3-0.7 0.5-0.2 7.5-2.7 1.3-0.4 1.7-1.1 6.9-4.6 7.3-7.5 3.1-4.5 2.6-4.8 1.8-5.4 0.6-6.1-1.2-6-0.3-3 0.9-2.2 3.7-3 7.5-3.9 0.1 0 4.1 8 6.3 12.5 1.3 5.5 3.2 8.3 12 23.7 9.3 24.9 1.5 2.7 4.9 6 1.9 5.1 22.5 32.3 8.8 12.8 10.5 11.7 1.5 1.2 7.1 8.3 0.3 3.5 0 4.2 0.9 3.5 4.8 2.7 1.4 2.9 3.9 12.9 1.8 3 2.1 1.3 1.8 1.8 6.2 12.1 3.7 4.7 1.3 2.6 0.4 2.7 1 2.6 6.5 7.2 2.1 5.9 1.9 12.9 2.5 7.1 7 9.7 0.5 2-0.8 2-1.3 1.9-0.7 1.8-0.1 1.7 1 5.3 1.2 15.1 1.2 7 4.5 14.3 0.4 7-1.4 6.4-3.1 5.9-2.5 6.9z"/>
+<path id="KR41" d="M394.1 117.9l4.8 3.1 2 1.3 1.1 2.7 1.5 1.2 1.2 1.5 1 2.8 1.5 2.2 1.6-0.2 1.6 1.6 4.6 4.2 5 2.3 1.7-2.7 0.1-5.7 0.3-1.8 1-1.1 1 0.6 0.2 1.7 0.5 1.7 2.8 1.9 3-0.5 2-2.1 1.8-2.3 1-0.8 1.1-0.2 1.1 0.3 0.9 0.7-0.5 1.2-0.8 1.1-1 3.1 0 3.2 2.2 2 2.1 1.3 5.2 1.2 5.6-2 2.3 1.7 0.9-0.2 0.8-0.7 1-0.1 0.9 0.7 1.3 4.1 0.7 8.1 1.7 4.6 3.5 2.5 3.2-0.2 3 0.2 1.9 5 2.5 1.2 2.6 0.5 3.2 5-0.7 6.9-1.5 2.4-2.8 0.9-6.9 5.1 0.3 2.7 0 2.8-0.8 2.3 1.1 3.1 0.7 3.1-4 4.6 1.7 2.1 3.5-1.1 0 3.4-0.6 3.4-1.4 2.9-0.2 2.8 3 2.5 3.6-1.1 3.8 0.6 3.4 2.2 3.4 1.4 7.6 4.2 4.6 0.6 3.3 1.3 3.2 0.4 2 1.7 1.6 2.6-1.4 3.1-2.7 1.1-2.5 3-1.8 3.1 0.8 3.9-1.1 3.8-8.3 17.9-6.1 14.8-7.3 13.6-1 1.8-1.1 1.7-1 0.7-1.1 0.9-0.8 1.3-0.6 1.4-6.5 12.1-3.4 2.4-0.8-1-2.6-0.6-2.1 2.2-1.2 2.9-1.6 2.1-3.5 1.5-2.2 2.4-1.2 5-4.5 1.5-5.8 2.8-6.1 1.8-6.4-0.9-5.2-4.4-5.9-2.7-11.2 4.8-5.3 0-6.4-1.3 1.7-1.3 2.1-1 1.4-1.6 1-4.1-0.3-0.8-1.3-1.3-0.2-0.4 0.7-0.6 0.8-0.1 0.7 0 1.8-1 1.2-0.2 0.9-0.6 0.4-2-8.1 2.3-1.2 1.7 0.4 5.3-1 1.2-3.2 1-4.4-0.6-5.4-3.1-4.8-4.8-1.8-4.5 8.1-0.9 0-1.1-0.6-0.2-1.2-1 1.5-0.2 1.4 0.1 1.4 0.4 1.1 0.9-0.5-3.2-1.9-2.9-1.3-3.3 0.9-4.5-1.5-0.7-1.2 1.6-0.7 2.7-0.2 2.7-0.7 3-1.3 0.7-1.2-1.3-2.6 0.5-2.6 0.7-6.3-1.9 0-1.9-0.5-1.7 0.5-2.3-0.3-2.9 1.6-2.9 1.8-2.5 2.2-1.1 2.3-0.9 3.4 0 3.7-1 0.8-1.1 0.2-3.2-0.9-0.6-1.9 1-2.8 2.5-1.7-0.4-1.3-0.8-0.7-1.3 0-2.1-3.2 1.7-2.6 1.8-4.9 5.3-1.2 1-1.6 0.5-1.4 0-0.9-0.9 0-1.5 0.9-1.6 2-2.8-4 0.9-1.3-0.4-0.4-2.3 0.7-1.7 1.7-1 1.9-0.6 1.4-0.8 1.6-2.3-0.4-0.5-3.7 0.5-1.2-0.8-0.9-1.8-0.9-2.3-1.1-2.1 0.6-0.2 0.4-0.3 0.8-0.8 1 0.8 1.5-0.1 2.7-0.7 2.1 0.6 1.8 1.1 1.8 0.6 2.1-1-0.2 1.9 0.2 1.8 0.6 1.5 1.3 0.6 1.5-0.6 0.6-1.6 0.7-3.6 2.3-3.4 1.9 0.2 2.1 1.3 3-0.4-0.7-1.4-0.8-1.1-1.1-0.7-1.2-0.3-1.9 0-0.9-1.3-2-0.3-1.6 0.5-1.6-0.1-2.6-0.5-4.3-1.4-5.9-4.4-0.3-2 2.7-3.8 1.7-1.8 4.3-1.3 1-0.7 1.8-1.4 1.9-3.7 1.3-4.2-1.3-2.1-2.2-1.5-1.4-3.3 0-4-8-7.7-6.9 0.2-6.2 0.2-0.7-1.5-1-2.5-1.2-2-1.4-2.4-1.6-1.5 0-2.3-0.6-3.5-1.4-5.3-2-14.1 0.5-2.4 1.8-0.3 7.5 2.7 2.4-0.5 2-1 1.7-0.3 1.9 1.2 0.6 2 0.3 3.2-0.2 3.2-0.7 2.2-0.1 4.1 4.2 3.5 5.2 2.2 3.3 0.2-2.5-2.7-7.9-5.6 2.3-6.1 0.7-3.6-0.6-2.6-1.3-2.7-0.1-1.4-0.1-2 0.6-3.5 1.4-2.7-1-1.3-1.3 0.2-0.6 0.4 0-0.4 1.5-3.9 0-0.3 0.1-1.3 0.1-1.1 0-0.6-0.1-1 0-1.5 0-1 0.3-0.8 0.3-0.8 0.1-0.6-0.3-1.1-0.4-1.9-1-2.8 1.8-0.2 3.5-1.3 1.1-0.9 0.6-0.2 0.6-0.3 0.3-0.1 1.8-0.2 2 0.2 1.2-0.2 0.8-0.8 1.3-2 1.8-2.2 1.8-1.8 0.5-0.5 2.3-2.1 1.3-1.6 0.8-1.2 0.1-0.2 0.9-1.8 0.5-2.1 0.1-1.2 0.1-0.4 0.5-1.6 0.3-0.7 0.7-1.3 0.3-0.5 1.4-1.3 1-0.6 2.5-1.9 2.2-1.9 0.5-0.4 0.2-0.1 1.3-0.7 2-1.1 0.4-0.2 0.6-0.7 0-0.4 0-0.2-0.2-0.4-1.1-1.6 0-0.7 0.4-3.2 0.3-0.9 0.3-1.1 0.5-0.6 0.4-0.7 0.2-0.1 0.8-0.3 0.3-0.5 0.1-0.1z m17.6 112.5l1.3-4.8-0.1-4.2-1.4-3.8-0.9-5.5-2.4-4-4.8-0.4-4.3 1-2.7 2.9-1.9 4.1-3.1 4-6.1 0.6-0.8 2.7-0.2 2.9-2.9 1.8-3.2 1.1-4.3-2.7-3.8-0.2-2.1 4.3 3.2 4 2.7 3.8 0.7 4.9 2.7 1.8 4 1.2 4 5.2 5.8 0.2 2.4-0.4 2.4-1.4 3.4-1 3.4-0.8 1.5 3.6 4-2 3.9-0.9 3.5-2.1 1.3-2.3 2.3-3.1-1.1-1.3 0-3 2-1.4 1.9-1 0.4-2.5-1-2.5-2.8 0-3.2 1.2-3.7 0z m-60.5-47.7l-0.3 0.2 0-0.6 0.3 0.4z m-50.8 4.6l2.7-0.1 2.5 0.4 1.3 1.4-0.9 3.1-2.4 2.1-3 0.2-5.7-1.3-1.2 0.5-1.5 0.8-1.4 0.1-0.5-1.9 0.3-0.6 1.6-4.7 1.6-1.6 1.9-0.5 2.2 0.5 2.5 1.6z m8.4 18.4l1.7 1.3 1.3 1.5 0.2 1.6-1.4 1.9-2.7 0.1-9.2-7.1 1.1-1.1 0.6-1.4 0.8-3.2 0.4-0.8 0.7-0.9 0.7-0.7 0.8-0.2 0.5 0.3 0.3 0.6 0.2 0.7 0.5 3.1 0.1 0.6 0.7 1.1 0.8 1 1.9 1.6z m20.5 16.8l-1.1 0.1-0.8-0.4-1.4-1.5-1-0.6-0.8 0.2-0.5 0.6-0.5 0.3-7.2 0.4-2.6-1.2-2.8-3.7 4.2-1.1 1-0.7 1.1-1.8-0.1-0.8-0.8-0.6-0.7-0.9-4.8-9.2-0.3-1.4 0.5-1.9-0.2-8.1 0.6-1.8 1.3-0.5 3.2-3.8 2.5-0.6 2.1 1.6 2.1 2.4 2 1.9 4.4 2.2 1.7 1.7 0.7 2.8-0.1 1.4-0.7 2.3-0.2 1 0.3 1.2 1.3 2.3 0.3 1.2 0.4 6.2-0.4 1.4 0.7 1 0.8 1.8 0.4 0.8-1.8 1-1.5 3.6-1.3 1.2z m-240.7-65.8l1.5 1.8-0.2 2.6-1.9 1.3-2.6-1.5-3.5 0.3-0.7 0.3 0 1.8 1.4 0.7 1.6 0.3 0.7 0.6-2.8 2.2-5.5-0.8-4.1-3.5 1.4-6.1 3.4 1.2 7.5-2.6 3.8 1.4z m185.4 128.8l-1 0.5-0.6-0.2 0-0.6 0.5-2.8 0.7-2.3 1-1.4 1.1 0.8 1 1.6 0.9 0.8 3.4 1.8 1 1.1-0.6 1-1.7 1.8-1.2 0.5-1.6 0.3-1.3-0.6-0.9-1.6-0.4-0.9-0.3 0.2z m52-8.7l1.4 0.9 0.6 2.1-0.6 0.7-1.5 0.5-0.5 1.1-0.1 1-1.2 1.4-1.6 0.4-1-0.8-1.1 0.1-0.9-0.5-0.3-2.2 0.2-2.2 1.2-1.5 2.3-1.3 3.1 0.3z m17.7 4l0.3 0.8 0.3 1.5-0.7 1.5-6.9 5.6-3.2 0.4 0.1-0.9 1.4-2 0.2-1.2-0.6-0.9 1.8-2.1 0-2-0.7-2.5-1-1.8-1-1.1 0.3-0.3 2.3 1 1.9-1.6 0.4 0.1-0.4 1.5 0.6 1.3 1.6 0.9 2.5 1.1 0.8 0.7z m-125.5-72.4l1.4 0.2 1 1-0.4 1.8-1.3 1.3-0.8 0.4-0.4-0.9-0.8-2.2 0.2-1.4 1.1-0.2z m-131.8-28.8l1.1 0.6 0.2 1.1-0.6 1.5-0.5 1.8-0.5 1.5-1 0.5-1.1-0.1-0.9 0.3-0.7 0.8-0.3 0.1 0-0.5 0-0.2-0.4-0.8-1.1-1.4 0.4-1.4 2.3-1.8 1.4-1.5 0.7-0.6 1 0.1z"/>
+<path id="KR44" d="M315.4 415.8l1 3.1 1.8 2.8 0.8 2.6-1.3-0.6-6 0.4-2-0.3-0.3-2.6 0.6-0.8 1.1-1 0.5-1.5-3.2 2-1.5-0.7 0.4-2.5 2.4-3.4-0.9-1-1.8 2.2-0.7-1.6-1.4 0.8 0.7-4-0.5-6.2-0.6-3.8-1.4-4.7 1.2-1.5 2.4-2.2 2.6-0.9 1.8 2.9 0.2 1-0.6 1.2-1 0.9 0.1 1.1 2.3 5.2 0.4 1.7-0.6 1.3 0.7 1.2 1.5 1 1.2 2.1-2.8 0 0 1 0.9 0.2 1.9 1.1-0.2 1-0.1 0.9 0.4 1.6z m75.4-75.5l6.4 1.3 5.3 0 11.2-4.8 5.9 2.7 5.2 4.4 6.4 0.9 1.1 2.5 1.6 1.7 1.8 1 2.3 4.7 1.8 1.3-0.1 3.4 1.1 1.1 0.9 1.7 0.3 1.9-0.3 1.9-0.7 1.8-0.4 1.8-0.2 1.5-0.7 1.3-1.2 0.3-1.3-0.2-1.2 1.3-2.8 4.9-3.8 5.5-19.3-7.7-3.1 8.7 0.4 25.6-2.1 2-1.2 3.5 12.3 2.4 9.3-2.5 7.2 11.4 2.5 4.8 0.7 12.2 2.8 9.1 6.7-1.7 5.9-4.4 1.9-0.7 3.6-2.8 1.9-7.3 1.8-2.9 0.7-3.9 1.8-2.4 2.2-1.7 1.9 0.9 1.8 0.5-0.6 3-2.2 1.6-1.4 2.5-1.2 2.9-3.1 5.5-1.6 6.5-0.2 4.6 0.3 4.8 4.4-0.9 4 1.3 4.2 2.6 1.4 5-0.2 5.8 1.2 5.7 2.7 4.9 3.1 4.8-3.2 3.3-3.3 2.9-4 1.1-4 0.2-2.9 0.7-7.9-1-0.5-1.4 0.9-1.9-0.8-1.7-1.7-0.4-4.5-2.3-6.1-11-4.4-3.8-2.2 2.3-1.8 2.8-2.9 0.6-1.9 0.9-2 0.7-7.4 1.4-3.8 1.5-4 0.7-2.9-4.5 1.2-7.4-5-1-14.1 4.5-7.6 1.6-6.5 0.7-6.1 7.6-2.8 0.8-2.7 1.9-2.3 2.2-2.5 1.2-3.1 0.5-2.8 1.3-2.1-1-0.7-1.2-0.2-1.5-0.7-2.1-1.1-1.8-2.3-3-1.2-2.1 1.9-1.5-0.9-1.1-1.9-0.7-1.7-0.6-3.1-5.4-2.3-1-1.9 1.1-0.8-0.1-0.1-1.8-3-2-2.7 0.5-0.8 3.1-0.5 1.1-0.9-0.9 0.6-4.9 4.6-2.3 4-1.3 5.7 1.7-2-3.4-1.1-1.3-1.5-1.1-1-0.2-1 0.7-0.8-0.5-1-1.1-0.9-1.2 2.9-7.8 1.6-3.5 2-1.3-1.5-1.8-5.8-1.8-2-1.1 2-1.9 6-1.5 1.3-1.7-0.9-2.2-2.1-0.6-4.5 0-0.9-0.7-1.6-1.9-1.1-1 0-1.1 1.8 0-2.1-3.8 2.5-1.4 2.8-0.8 2.6-3.8 5.6-1.6 2.6-1.4-7.9 0-1.9 1.1-2.9 4.4-2.2 0.4-1.3-1.7-1.2-3.1-0.8-3.2 0.1-1.9 2.8-3.3 1.3-2-0.4-0.9-2.6 0.9-1.2-1.1-1.1-0.7-0.6-0.2-0.6-1.5 0.5-1.4-0.1-1.6-0.6-2.9-0.9-1.2 0-0.7 1.8-0.1 2.7-1.3 2.9 0.1 0.2-2 0.8-1.9-1.1-1.4-1.6-0.4-2.2-2.1 1.4-2 1.9-1.5-1.3-2.4-3.2-0.6-0.7-2.8 1-2.1 3.2-0.5-1.8-2.1-0.6-1-0.5-1.5-1.1 1-1.9 2.1-2.2 0.9-0.4 1.2 0.1 1.2 0.9 1.4 0.2 2.9-1 3.3 0.6 4.4-1.4 3.8-1.3 1.5-2.5-1.9-2.6-0.1-2.6-1.8 0.6-9.1 0.9-3.3-1.6-0.7 0.5-4.3-1.5-1.8-2.2 0.4-1.2 2.2-0.3 2.7-1 2-3.1 0.1 1.3 2.6 2.4 3.9 0.9 2.8-1.5 1.3 0.2 1.4 2.3 3.1-2 0.4-1.8 1-1.5 1.4-1.2 1.8 0.1-1.3-0.2-1.2-0.3-1.2-0.5-0.9 1.9-4.2-4-6.5 1.2-3.3-1-4.6-2.5 1.4-3.6 4.5-2.6 1-1.6 0.3-1.4 0.6-1.4 0.1-1.6-1-0.4-0.8-0.6-1.5-0.2-1.6 0.7-0.7 5.6 0.1 1.4-1-0.1-2.6-1.4-2.6-2.1-1-2.2-0.7-1.7-1.4-0.7 2-0.4 4.2-0.8 2-1.6 1.4-0.5-1.4 0.2-4.2-0.3-4.1 0.4-1.2 3.4-4.4 0.7-1.5 0.6-2.2 0.4 1.7 0.6 1.4 0.7 1.4 1 1.4 0.7-0.7 0.9 0.1 1 0.3 1.1 0.3-1.4-2-1.4-2.6 3.8 1.1 1.6-0.4 1.1-2-3.5-0.2-2.1-1-0.3-2.1 2.2-3.6-3-2.6 0.2-2.3 2.3-1.9 3.3-1.2-0.8 4.1 0.3 1.2 1.9 0.4 3.3-0.1 0.9-0.6 0.9-1.6 0.3-3.8-0.4-5.1 0.6-4.2 3.2-1-0.4 2.4 0.1 3.7 0.6 3.7 1.7 4.4-0.9 1.6-1.3 1.4-0.8 1.5 0 1.5 0.9 2.5 0.1 0.7-0.7 0.8-2.5 1.6-0.5 0.4 0.1 1.5 0.5 1.6 0.7 0.9 1-0.5 2.3-2.1 1.7-0.1 3.9 2.7-2.8-6-1-3.8 1.4-1.7 2.2 2.8 1.3 0.8 0.7-1.8 0.5-0.6 1.5-0.5 2.7-0.7 0-1.1-1.1-0.1-2.6-1.1 0-1.1 3.2-0.8 2-3.1 0.5-3.8-1.1-2.8-1.2-0.4-3.5-0.1-1.8-0.7-1.3-1.6-0.4-1.5 0.6-0.6 2 1.4 0.9-2.6-1-1.6-2.1-0.6-2.5 0.2 1-1.3 1.4-1 1.4-0.2 1.4 0.7 1.3 1 1.1 0.3 0.5-0.6-0.6-1.2 0-1.3 5-0.1 2.4 0.8 1 2.3-0.7 1.4-1.3 1.5-0.8 1.9 0.9 2.7 1.2-1.2 1.5-0.8 1.3 0 0.6 1.4 0.2 1.2 0.6 1.1 0.1 1.2-0.2 0.4-1.2 1.5-0.4 1 0 7.6 0.4 2.2 1 1.5 1 0.6 0.5-0.8 0.5-4.2 2.5-8.1 0.6-4 0.7-0.9 1.6 1.1 2.4 2.6 1 1.8 0.6 1.7 1.1 1.1 1.9 0.1 0-1-1-1.3-1.1-3.5-1.1-1.7-8.3-8.8-0.6-0.5 0.5-1.8 1.1 0.2 1.4 1.3 2.2 2.7 1.1 1.1 1.4 0.6 1.7 0 1.3-0.8 0.1-1.1-0.9-1.1-1.9-0.5-2.6-1.2-2.8-2.7-1.3-3.9-0.3-2.6 2.5-0.1 2.2 1.1 1.9 1.7 2.7 1.9 2.6 1.8 1.1 1.1 2 1.4 2 1.1 1.4 2.3-0.7 2.3-1.3 1.6 0.3 1.2 1.3 2.5 0.2 1.6-0.5 2.8 1.5-1 0.6-1.3 0.3-1.4-0.5-4.1 0.6-1.4 0.8-1.5 1.3-2.3 2.2-1.1 2.1 0 2.4 0.3 2.6 1 3.3 0.8 2.3 1.6 2.9 2.9 0.2 3.7-2.2 7.3 1.7-1.1 2.5-3.3 1.4-0.2 1 1.4 0.5 2.5 0.3 4.8-0.1 1-0.6 2.3-0.2 1.4 0.3 1.4 1.2 2 1.1 5.3-0.3 1.5-2.3 0.6 0.4 1.5 0.6 0.9 0.7 0.7 1.2 0.5 0.8-3.8 1.3-2.2 0.7-2.4-1.1-4.3 2.7 0.8 2.9 0.4-4.7-5.2-1.4-2.9 2.8-1.2 2.5-0.4 5.9-2.4 2.6-2z"/>
+<path id="KR28" d="M342.3 230.6l6.2-0.2 6.9-0.2 8 7.7 0 4 1.4 3.3 2.2 1.5 1.3 2.1-1.3 4.2-1.9 3.7-1.8 1.4-1 0.7-4.3 1.3-0.4-1.2-7.1-0.9-3.3 4.2-3.4-2.6 1.4-3.1 1.8-2.7-1.1-1.9-2.5-1.3-2.2-1.2 0.3-3.1-0.4-2.5 1.3-2.3 3.9-1.2 1.2-0.6 0.3-1.4-1.9-0.5-0.5 1.5-2.8 0.3-0.7-1.7-0.3-3.1 0.7-4.2z m-5.5 6l0.5 0.5 0.6 0.9 0.7 0.7 0.5 1.1 0.4 0.9-0.8 0.3-1.1 0.9-0.5 0.6-2.3 0.6-1.1-0.2-1.4 0.7-3.2 1.3-1.7 1.6-1 1.7-5.9 4.4-1.3-0.3-1.2 0.2-0.6-0.2-0.5-2.1-1.1-0.6-0.5 0.5-0.5 0.2-0.1-0.4 0.2-0.6-0.3-0.8-0.8-0.1-0.6 0.7-0.8 0.6-1-0.4-1.5-0.4 0.9-0.8-0.3-1-1.5-1.4-0.4-0.9 0.5-1.2 0.8-0.3 1.2 0.6 6.1-4.3 4.4-0.5 3 0.1 2.8-1.5 0.9-3.8 1.9-0.7 1.6 1.6 0.7 0.3 0.8 0.4 0.8 0.3 0.8 0.1 0.8 0.1 1.1 0.6z"/>
+<path id="KR45" d="M370.5 485l6.1-7.6 6.5-0.7 7.6-1.6 14.1-4.5 5 1-1.2 7.4 2.9 4.5 4-0.7 3.8-1.5 7.4-1.4 2-0.7 1.9-0.9 2.9-0.6 1.8-2.8 2.2-2.3 4.4 3.8 6.1 11 4.5 2.3 1.7 0.4 0.8 1.7-0.9 1.9 0.5 1.4 7.9 1 2.9-0.7 4-0.2 4-1.1 3.3-2.9 3.2-3.3 1.2 1.4 1.3 1.2 1.1-0.2 0.8-1.2 2.3 1.3 2.1 2.4 6 2 1.3 1.6 2.2 0.6 4.3-2.6 5-2.3 2 1.9 2 1.1 1.7-1.6 1.8-1.8 5.5 9.4-0.6 10.7-5 5.3-1.3 3.5-6.7 3.6-3.4 1.1-1.8-0.2-1.3 0.8-2.6 5.5-2.9 3.1-3.1 2.8-1.5 4.3-0.4 5.2-1.7 3.7-2.1 3.9-1.6 5.1-1.2 5.2-1.9 3.8-0.1 4.2 3.5 1.5 0.5 1.8 0.2 2.1 1.5 4-0.2 4.2 1.4 3.2 1.9 1.3-0.8 4.5-5.7 6.8-0.9 4.5-0.1 4-2.9 3-7.7-6.3-8.7-3.1-4.9 2.7-4 4.3-4.2 0.6-4.5 0-4.9 0.7-5-0.1-2.3-1.4-2.1-1.6-2.4 0.6-2.8 0-4.1 0.7-3.9 2.3-5-0.7-3.3-3.5 0.2-5.5-2.8-3.1-0.8-3.1 1.2-4.8-2.7-4.2-4 0.2-1 1.7-1.3 1.3-0.9 2.2-0.3 2.4-4.2 0.1-6.4-8.7-4.1-3.4-2.4-1-2.4-0.2-2.3 2.7-4.6-0.4-3.4 3 0 2.3 0.1 2.2-1.2 1.9-1.8 1.3 0.1 1.8 0.3 1.7-1.1 2.3-1.8 1.6-2.2 1-2.4 0.7-1.9 1.2-1.8 1.4-4.6 0.6-4.3 1.6-4 1-3.4-1.1 0.2-4.5 0.9-4.5 0.8-6.1-4-1-13.1 3.6-2.8 0.9 0 0.1-1.9-2.2-0.7-1.8 1-3.9 2.3-4.9 3.7-8.5 3.1-4.5 4.4-1.6 5.1-1 4.3-0.3 2-1.6 1.9-2.7 2.7-0.7 2.4 2.7 2.5 3.1 1.8 0.6-1.8-6.2-1.2-2.9-2.1-1.1-19.2 3.1-6.7-4.2 0.4-4.5 0.1-1.8 3.2-1.5 2.8-2.8 2.5-2.9 4.1-2.4 5-2.8 3.8-5.3 0.5-4.9 2.1-1.3 1.6-1 0.8-0.7 4.9-0.5 4.7 0.6 3 2.4 2.2 0.5 1.4 2.5 0.6-1.4 0.5-1.8 0.2-2-1.8-1.5-1.3-0.9-2.6-1.3-2.9-2-2.4-1.8-1.3-0.6 0.4-1.4 1.1-1.6 1.1-0.9 1.3-0.3 7.5 0.5 1.7-0.2 1.2-0.6 0.8-1.5 0.4-1.2 0.6-0.9 1.9-0.3 0.6-0.5-0.7-1.3-1.5-1.2-1.6-0.6-0.4 0.3-10 4-3.3 0.2-6.6-0.4-6.5-0.5 0-2.9-0.4-4-1.3-1.1-4-1.4-6 1-0.6-5.1 12.3-1.3 6.7-0.8 6.7-0.4 2.2-1.3 2.4 0.6 2.8-1.4 5-3.8 6.3-2.6 2.7-1.9 0.3-2.4-8 2.5z m-75.1 79.6l-0.6-0.6-0.4-1.1 0.2-1 1.5-0.8-0.2-0.3-0.7-0.4 0.3-0.4 0.8-0.4 0.5-0.7 0.8-0.2 0.5-0.2-0.2-0.9 0.5 0 1.6 0.3 1-0.8 0.5-0.6 0.6 0.5 0.3 1-0.5 1.2-2.5 2.2-1.7 1.8-1.1 0.9-0.4 0.4-0.8 0.1z"/>
+<path id="KR46" d="M319.7 598l0-0.1 2.8-0.9 13.1-3.6 4 1-0.8 6.1-0.9 4.5-0.2 4.5 3.4 1.1 4-1 4.3-1.6 4.6-0.6 1.8-1.4 1.9-1.2 2.4-0.7 2.2-1 1.8-1.6 1.1-2.3-0.3-1.7-0.1-1.8 1.8-1.3 1.2-1.9-0.1-2.2 0-2.3 3.4-3 4.6 0.4 2.3-2.7 2.4 0.2 2.4 1 4.1 3.4 6.4 8.7 4.2-0.1 0.3-2.4 0.9-2.2 1.3-1.3 1-1.7 4-0.2 2.7 4.2-1.2 4.8 0.8 3.1 2.8 3.1-0.2 5.5 3.3 3.5 5 0.7 3.9-2.3 4.1-0.7 2.8 0 2.4-0.6 2.1 1.6 2.3 1.4 5 0.1 4.9-0.7 4.5 0 4.2-0.6 4-4.3 4.9-2.7 8.7 3.1 7.7 6.3-0.7 3.6 2.8 3.3 1.3 4.2 0.6 8.8 1.8 3.3 3.4 2.5 3 3.1 1.2 3.5 1.4 3.1 8.5 9.2 1.8 4.5 0 3.1 0.3 0.7-0.9-0.2-5.5 0-1.8-0.3-0.7-0.8-0.3-1.3-0.8-1.6-1.6-1.2-0.4 1.2 0.3 2 0.3 0.9-1 3-0.6 1.1-1.2 1.4-5.1 4.1-2.9 1.3-2-1.7-2.6-5.3-2.1-0.8-1.5 2.1-0.7 3.3 0.1 2.8 1.3 2.9 2.1 3.8 2.4 3.3 2.2 1.4 1.5 1.9 1.4 0.7 1.7-1 4.2-4 2.9-0.4 2.5 0.5 2.3 0.1 2.6-1.3-0.2 3.2-0.4 2.4-1.4 4.6-1.5 8.3-1.2 1.9-4.7 1.6-3.8-1.9-3-0.7-2.5 5.5-0.8-0.5-0.2 0-0.2 0.3-0.7 0.2 1.1 2.1 0.8 2.4 1 7.3-0.6 1.4-1.4-0.8-2.3-2.3-3.2-0.4-2.4-1.3-1.6-2.5-0.6-3.7 0.8-3.5 1.8-3.4 1.2-3.2-0.6-2.8-1.1-1.6-2.1-4.6-0.6-0.4-0.8 0-0.8-0.1-0.6-0.8-0.1-0.8 0.2-1 0.4-0.6-2-4.4-0.4-1.6 0.2-0.9 0.6-1.7 0.1-0.8-0.3-0.9-0.6-0.8-0.7-0.2-0.3 0.7-0.4 0.4-2.3 5.9-0.9 1.2-0.5 0.4-0.7 0-4.6 1.7-2.7 0.3-5.9-0.1-2.2 0.6 1.8 1.5 3.5 1.5 2.9 0.9 0 1-5.8 1.8-2.9 1.7-0.5 2.2 1.2 1 2.5-1 1.4 0.5 0.9 1.6-0.2 0.6-0.8 0.2-0.3 0.4 1.8 6.6 4 3.5 4.2 2.7 2.9 4.2-1.4-0.2-2.4 0-1 0.2 5.8 2.2 0.8 1.9 0.4 3.4-1.3 1.2-1.4 1.2-2.6-0.1-1.7 0.4-6.2-3.8-1.9-0.7-1.8 0.4-2.2 1-1.8 1.3-0.8 1.3 0.3 0.5 1.6 3.4 1.9 0.4 1.2 0.8 5.1-1.4 2.8 2.4-6.4 5.9-2.3 3.3-2.5-1.2-3.9 3 0.4 2.9 1.8 1.9-3.8 0-5.5-7.3-1.9-4-5.1-5.5-1.6 0.4-5.3 2.8 0.5 1.7 0.4 0.6-2.2-0.7-2.1-0.4-1.9-1-1.2-2.4-0.2-2.4 0.9-1.4 3-1.8 1-0.8 2.7-3.7 1.7-3.5 0.9-1.2 2-1-0.1 2.7-0.7 2.7-2 4.8 4-0.2 3.3-1.3 2-2.7 0-4.9-0.8-1.9-1.1-1.1-0.8-1.2-0.1-2.5 0.7-1.3 3.9-4.4 1.5 0.8 0.9 1 0.2 1.3-0.7 1.5 0.8 2.2 1.2 1.5 1.5 0.5 2.1-0.8 0.9-1.1 1.9-4 1-1.7-1.9-2.8-0.7-3-1-1.3-2.5 2-3 1.3-2.4-2.1-3.4-5.4-1.9 3-2.7 7.1-1.9 2.3-2 0.8-1.6-0.1-3.4-0.7-1.6 0.6-1.5 1.3-2.5 3.3-1.1 0.9-4.9 2.9-2.7 2-1.7 1-1.7 0.5-1 0.5-0.2 1.4 0 1.8-0.2 1.9-0.9 1.4-1.3 1.4-0.6 1.8 1 2.1-7.5 7.4 0.3 6.8-1.3 1.1-3.6-1.8-1.2 1.5-0.6 1.6 0.1 1.7 0.8 2-1.8-0.6-3.8-2.7-5.2-1.5-1.2-0.8-1-3.1 0.5-8.3-0.5-3.3 0.7-2-0.1-2.6-0.9-2.2-1.6-1.1-1.4 0.4-1.5 1.4-1.1 1.8-0.5 1.5 0.6 2.3 0.8 2 0.1 1.4-4.2 1.4 0.5 2 3.1 3.8-5.2 3.1-2 1.8 2 0.8 0.5 0.3 0.1 0.8-0.1 0.8-0.5 0.4-0.8-0.2-1.3-0.7-0.6-0.2-1.8 0.3-0.4 0.7 0 1.2-0.7 1.7-1 0.7-4.1 1-1.5 1.3-0.5 1-3.3 11.1-0.3 1.6 0 1.9-3.3-0.7-6.2 2.1-1.6-0.4-0.2-1.9 1.3-3.9-0.3-1.9-1.2-1.1-1.7-0.3-3.6 0.2 0-1.1 0.8-0.9 0.2-0.7 0.3-2.5 0.4-0.1 0.6 0.2 0.6-0.4 1.9-3.5 0.4-1.7-0.5-1.7-0.7-0.5-1-0.4-2-0.2-1.5-0.4-0.2-0.9 0.4-0.8 0.3-0.2 0.1-2.1 0.5-2.1-0.2-1.1-2.2 0.8 0.6-4 2.7-2 3.6-0.7 3.4-0.1-0.6-1.2-0.9-1-1-0.7-1.3-0.4 2.1-1.5 1.3-1.8 0.1-1.5-1.7-1-0.6 0.3-1.2 1.5-0.9 0.6-1.1 0-1.7-1.1-1 0-0.8 0.7-0.6 1.1-0.4 1.5-1.2 0.3-1.2 0-1.3-0.3-2.9 0.1-1.6 0.3-2 0.8-0.2-2.7-1.2-1.5-3.2-1.6 0-0.5-0.7-1.3-0.8-0.8-0.4 1.1-0.4 0.6-0.9 0.5-1.1 0.3-0.9-0.4-2.8-2.7-0.4-0.1-0.4-1.7 0.2-0.5 0.6-0.2 0.5-0.9 0.5 0.8 1.4 0 1-0.8-0.6-1.7-3.6-1.8-2.8-2-0.3-4.8 1.2-5.3 1.4-3.6 0.2-1.3-0.1-1.5 0.2-1.3 1.1-0.5 1 0.1 1.1 0.3 0.7 0.5 0.9 2 4.2 6.2-1.3 1.7-0.4 1.6 0.2 1.7 0.5 1.8 2.8 7.9 1.7 1 6.7 1.1 2.9 2 1.5-0.1 1.1-2.9-1.5 0.3-0.8-0.4-2.8-0.7-1.3-2-1.7-1.7 0.4-3.8-1.8 0.3-0.8 2.3-1.4 0.2-0.9-3.1-0.4-4.1 1-2.4-0.8-2.9 3.8-0.3 5.6 1.2 0.8 1.3-0.4 2.2 0.1 0.6-0.1 0.7 0.3 1 1.4 0.9 0.9 1.1 1.7 1.2 2.5 0.9 1.4 1.4 1.9 1.4 1.4 0.9 0.6-0.7-2.8-3.7 1.7-0.4 2.5 1.4 3.2 1.8 3.9 1.3 2.9-0.8-2.9-0.5-2.3-1.4-4.1-3.6 1-1.2-2.9-2.2-4.5-5.7-2.4-1.1-3.4-0.7-4 0.2-2.8-1.7-3.4 0.9-3.1-1.1-0.4-1.5 1.9-2.5 1.9-0.7 4 0.6 5.2-2.3 6.2 4.6 2.1-0.4 0.5 0.3 0.3 0.4 0.4 0.2 0.6 0.3-0.6-3.2 0.3-2.9 1.6-2.1 3.4-0.8 6.2 1.8 3.1 0.3-0.9-2.1 2.1-1.1 1.1-0.2 1.4 0-2-2.3-3.1-0.5-7 0.6 0.5-1.6-0.2-1.1-0.3-1.1 0-1.7 0.5-1.1 0.7-0.8 0.6-1.1 0-1.7-1.1-2.4-1.8-0.6-2 1-1.5 2-0.2 1.4 0.9 2.8 0.2 1.5-0.2 0.2-1.7 3.3-1.5 5.6-1.4 1.9-2.7 0.2 0-0.3-0.8-0.7 0.5-0.9 0.7-1.7 0.6-0.9-1.8-0.9-1.3 0.6-1.2 1-1.7 0.6-3.7-0.8-1.1 0.5-0.2 1.7-1.9 0-2.9 0.9-1.4-0.7-0.5-1.7 1-1.7 2.7-2.7 1-1.6 0.6-1.2 0.2-1.1 0.1-1.3-0.4-2.4 0.5-1.3 1.7-1.5-1.6-1.3-1.5-2.8-0.8-3.2 0.2-2.8 1.9-1.7 2.6-1.7 0.8-1.5-3.4-0.8-1.6 0.3-0.9 0.8-0.7 0.8-1 0.4-1.3 0.6 0.2 1.7 0.6 1.8 0.1 1.6-1.9 1.7-2.5 0.2-2.3-0.8-1.7-1.1 1.2-0.9 0.6-0.2-1.2-0.9-1-1-0.8-1.2-0.7-1.5 1.6-0.8 1.5 0 3.4 0.8-0.4-3.6 3.7-3.8-1-3.4-3.8-5.4-2.4-2.2-2.6-0.9 1.1 3.8-1 2.1-1.9 0.1-1.9-2.6 1.3-1.7-3.5-4.7-0.5-2.7 1.9-2.3 2.8-0.4 2.5 1.3 1.1 2.6 1.7-1.1 0.9-1.9 1.1-3.8 1 1.9 0.2 1.6-0.4 3.1-0.6 1.5-0.2 1 0.3 1 0.5 0 0.7-0.3 0.4 0.3 0.5 2.2 0.2 0.9 0.4 0.6 1.7 0.9 1.3 0.5 2.3 0.1 1 0.6-0.8 1.9 0.2 1.8 1 1.7 1.4 1.5 3.5-7.8 0.3-2.6 0-3-0.7-1-2.6-0.7-1-0.6-0.9-0.9-1.4-3.7-4.5-5.2-1-2.4 0.3-0.8 0.6-0.7 0.7-0.9 0.3-1.5-1.5-1.1-0.7-1.3 0.3-2.3-1.7 0.7-1.8 0.3-3.9 0.1 1.5-1.9 2.5-0.6 2.8-0.1 2.5-0.6-0.8-0.4-0.5-0.3-0.5-0.4-1-0.2 0.6-1.5 0.8-0.9 0.9-0.6 0.9-1 0.5-1.2-0.3-1.1-0.4-1.1-0.2-1.1 0.4-2.6 1.2-2.6 3-4.5 0.8 0.8 2 2.6 2.4 0.7 1.2-0.1-0.3-1.2-2.6-2.9z m74.3 21.8l-7-2.6-3.7 1.1-3.5 0.8-4.9-1.2-2.9 2.7 3.7 8.2 7.4 4.4 8.3 1.4 5.4-7.2-2.8-7.6z m25.5 124.8l4.2-0.5 2.2 0.2 1.8 0.9 1.5 2.6-0.4 3.1-1.8 2.5-2.5 1-5.6 1.1-2.2-0.4-1.6-0.7-3.2-2.2 0-1.2 0.7-0.9 0.2-0.8-0.6-0.7-1.2-0.9 1.9-1.4 2.1-0.9 4.5-0.8z m-107.6-2.4l0.3 2.2-0.4 2.6-0.7 2.4-2.7 5.7-1.1 1.8-1.3 0.9-0.3-0.5-2.3-2.2-1.1-0.7 0 1.1-0.5 2.6-12.9 7-1.6 0.6-5.7 0.5-1.6-0.5-0.2-1.4 0.7-1.2 1-1 0.4-0.8-0.7-1-3.9-2.5 0 3.5-2.9-3.4 1.7-5.5 3.9-4.4 3.8-0.3 1.2-3.6 0.8-1.2 1.2-1.4 1.5-0.8 1.3-0.3 1-0.7 0.3-2.3 1.6 1.9 2.2 0.3 1.9-1.3 0.8-2.5-1-2.1-3.5-2.7 0.9-1.4 2.2-0.1 2.2 1.2 2 1.5 1.4 0.8 0.4 0.5 0.4 1 0.6 1.1 0.9 0.8 0.6-0.2 3.1-2 0.1 1.4 4 6.6z m190.1-30.7l1.4 0.4 1.3 2 0.9 2.4 1.2 4.1 0.1 2.4-0.4 2.3-1 2.3-1.3 1.4-1.6 0.1-1.5-0.8-4.8-4.9-0.5-1.9 0.8-3 0.6-0.8 2.5-1.9 0.5-1 1-4.2-2.1-2.2 0.3-1.3 1.5-0.7 1.6-0.2 1.5 0.6 0.4 1.6-0.7 1.8-1.7 1.5z m-243.1-4.7l1.7 1.5 0.4 0.6 0.1 1.3-0.2 1.3-0.6 1.2-2.1 2.8-0.9 0.7-1 0.1-1.3-0.2-0.1-0.5-1.9-1.1-2.1-1-0.6 0.3-1.3-2.8 1-1.3 4-1.6 2.4-3.3 0.9-0.5 0.5 0.4 1.1 2.1z m2.5-11.2l0 3.5-0.6-0.3-1.5-0.4-0.7-0.4-1.2 1.6-1.8 0-1.7-0.4-0.8 0.4-0.3 2.3-0.7 1.9-1.2 1.5-1.6 0.7-1.6-0.2-1.1-1.1-0.7-1.8-0.3-2.1 0.4-2.1 1.1-1.4 1.5-1 1.7-0.7 1.8 0.8 2.4-0.6 4.5-1.7 0.9-0.1 0.6 0.1 0.5 0.5 0.4 1z m6.6-21.9l0.6-2.2 1.3-0.3 1.5 1 1.1 1.9 0.3 2.4-0.4 2.3-1 2-1.6 1.3-2 0.6-1.1-0.4-0.9-0.8-1.1-0.4-4.4 1-1.7 0 0-1 1.3-1.2 2.5-3.9 1.8-1.7 0.9 0.1 1.3 0.3 1.1 0 0.5-1z m7.4-22.8l-0.7 0.2-3.6-0.9-1.3 0.2-0.5-0.4-0.3-0.4-0.4-0.2-0.6-0.1 1.1-5.3 0.7-1.5 0.9-0.6 1.6-0.5 1.5-0.7 0.7-1.1 1-2.3 2.5-1.5 2.7-0.7 2.1 0.6-4.1 2.4-1 1.4-0.1 1.6 0.6 1.7 1.8 3-1.4 0.6-1.5 1.5-1.2 1.7-0.5 1.3z m162.5 169.7l0.8 0.8 1 0.2 0.3 0.6-0.1 0.8-2-0.9-1.8-0.5-0.4-0.5-0.4-1.1-0.3-1.4-0.5-0.3-0.4-0.5-0.4-1.2 0.2-0.6 0-0.8 0.1-0.7 0.4-0.1 0.5 0.2 0.6-0.2 0.4-0.5 0.2 0 0.3 0.7-0.5 1.5 0.3 1.7 1.7 2.8z m30.2-70.5l0.6 1.6 0 1-1 1.1-2.5 1.6-2.1 0.6-0.8-0.4-0.1-1.4-0.9-1-1.4-0.4-0.6-0.9 0.4-0.6-1.5-1-0.9-0.7 0.5-1.2-0.1-0.9-0.2-0.7 0.6-0.4 1 0.4 1 0.6 1.9 0.5 0 0.4 0.7-0.2 1.2-1.2 1.2 0 3 3.2z m34-9.3l0.9 0.5 0.6 0.9-0.3 1-1.7 0.6-1.1 0.1-0.2-0.3-0.5-0.7-1.2-0.7-2-0.6-1.3-1.1-0.6-1.4-0.7-1-1.1-0.6-1-1.2 0.7-1.4 2.3-1 2.5-0.4 1.8 1.3 2 4-0.2 1.2 0.1 0.6 1 0.2z m-228.1-14.8l0.3 0.3 0.3 0.8-0.2 1.8-0.4 1.8-0.1 1.6-0.8 0.8-1.1 0.8-1.1 1.1-2.7 1.6-1.4 0.2-1.6-0.5-0.5-0.8 0.8-0.3 0.8 0 0.7-0.7 0.8-0.6-0.1-0.6-3-0.7 0.7-0.8 1.9-0.3 1.9-0.1 1.6-1.2 0.6-1.6-0.6-1.6-1.4-2.2-0.8-2.8 1-0.7 1.6 1.3 1 1 1.7 1 0.1 1.4z m-8.4 4.5l-1.3 0.6-1.1-0.9-0.5-5.7 0.5-3.2 1.1-1.5 1.7 3.8 1.5 2.1 1.1 2.4-0.4 1.9-1.2 0.4-1.4 0.1z m-80.3-19.6l1.5-0.4 0.3 0.7-1.2 1.1-0.6 0.8-0.4 0.9-2.1 2.5-0.4 1.2-0.9 1.5-0.7 0.9-0.6 0.7-1.3-0.6-0.9-2.4 0.2-2.2 0.7-2 0.9-1.7 1-1.6 1.2-0.8 1.1-0.3 0.6 0.5 0.4 1.2 1.2 0z m98.7-7.3l0.5 1.4 0 1.8-0.7 1.6-1.8 0.1-1.6-1.6-1.2-1.8-1.5 0-0.7 0.6-0.5 0.3-1 0.1-0.9-0.7-0.3-1.5-1.2-2.2-2.7-2.8-0.5-1.4 1.3 0.3 1 0 1-0.5 1.5-0.1 1.7 0.2 1.3 0.6 0.8 0.9 1.2 0.6 1.6 0.1 1.3 0.3 0.9 0.8 0.5 1-0.1 0.8 0.1 1.1z m-0.7-9.8l-0.4 0.4-0.5 1 0.3 2.3-0.8 0.8-1.7 0.5-1.5-0.9-1.8-1.5-2.3-0.9-1.6-1 1.3-1.1 3.4-0.5 2-0.9 1-0.9 1.3 0.6 1 1.4 0.3 0.7z m-12.1-5.1l-1.1-1.5-1-1.8 0.4-1.3 2-1 1.6-0.1 1.3 0.7 1.3 0 0.3-1-0.2-2 1.3-1.2 1.7 0 0.9-0.1 0.7 0.4 0.6 0.9 0.2 1.1-1.8 1.1 0.6 2.6-0.3 1.5-1 0.6-1.3 0-0.9 1 0.1 1.8-0.5 1.6-1.4 0.8-1.2-0.1-0.3-1 0-0.6-2-2.4z m22.6-15.4l-1.2 0.5-1.6-0.1-0.7-1.4 0.3-1.6 1-0.6 2.4 0 0.7 0.3 0.1 0.7-0.5 1.7-0.5 0.5z m-9.2-21.9l0.3 0.7 0.2 0.9-0.1 1.6-0.5 0.5-0.7 0.4-0.7-0.3-1.3-1.3-0.5-0.4-0.7 0.4-0.7-0.1-0.2-0.7-0.5-0.3-0.7 0-0.2-0.3 1-0.8-0.4-0.2-0.6 0.1-0.6-0.2 0.3-0.7 1-0.7 0.9-0.1 1.2 0.5 1.7-0.1 1.2 0.3 0.6 0.8z m-142.4 164.6l-0.7-0.4-2.7-2.5-1.5-0.9-0.3-1.3 0.7-1.7 1-1 1.5 0.5 1.2 1.5 1.9 4 0.2 1.3-0.5 0.8-0.5-0.1-0.3-0.2z m199.4-19.7l1.2 0.5 1.1 1.4-0.3 0.8-0.6-0.5-0.4-0.1-0.3 0.6-0.5-0.2-1.2-0.7-1.3 0.1-0.7 0.7-0.5 0.9-1.5 1-1.4 1.2-2 1.2-2.6-0.1-1.4-1.9-0.1-2.5 1.2-2.4 2.4-1.7 2 0 2.7 1.7 0.8 0.1 1.1-0.3 1.6 0 0.7 0.2z m9.9 2.5l0.6 0.3 0.4 0.8-0.4 0.5-0.6 0.1-0.2 1 0 1.7-0.7 1.2-1.3 0.4-0.7-0.4-0.2-0.8-0.7-0.5-0.7-0.1-0.3-2.2 0.9-3.8 0.3-2.1-0.9-0.9-0.3-0.7 1.1-1.1 0.1-0.5 1.2 0 2.3 1.1 0.3 1.6-1.3 1.2-0.2 1.2 1.3 2z m32.2-7.2l1.3 1.1 0.8 1-0.3 2-0.4 0.9-0.8 1.5-1.6 0.9-2 0.2-1.5-0.8-1.2-1.1-0.9 0.1-0.5 0.8-0.5-0.3-0.6-2.5 0.9-1.7 0.2-1.6 0.5-1.2 1-0.9 1.9-1 2.3 0.6 1.4 2z m-40.3-3.4l0.6 0.8 0.1 1.4-1 0.8-0.4 1.9-2 0.1-1.1 0.2 0.7 1.2-0.7 0.6-2.1-0.6-1.1-1-0.2-0.6-0.6-0.2-0.6-0.2-0.2-0.5 0.7-2 0.4-0.7 0.1-0.5-0.3-0.4 0.1-0.4 0.5-0.2 0.3-0.4-0.1-0.4-0.6-1.2 0.4-0.4 1.1 0.4 1 0.5 2.8 0.5 1.5 0.8 0.7 0.5z m-71-14.7l-0.1 1.8 0.2 1.2-0.6 0.9-1.3 0.2-0.8 0.6-0.6-0.2-0.5-0.9-0.5 0-0.2 0.8-0.9 0.1-2.8-1.1-0.9-1.4-0.1-0.9 0.5-0.8 0.1-0.8 1-0.7 4.7 1 1.9-0.3 0.9 0.5z m103.8-0.1l-0.6 0.6-1.2 0.2-0.7-0.9-0.3-1.3-0.7-1-1-0.4-1.4 0.2-1.6 0.6-1.3-0.1-0.6-0.2-0.5-0.4-3-1.3-0.2-0.5 1.4-0.2 1.4-0.4 0.6-0.4 0.5-0.2 1 0.2 1.3 0.5 1.5-0.6 1.8-1.5 1.4-0.3 0.8 0.6 1 0.2 0.5 0 0.6-0.1 1.5 0.1 1.9 0.5 1.2 0.7-0.2 1.2-0.8 0.9-0.2 0.6-0.2 1.1-0.8 1-1.2-0.2-1.2 0.2-0.7 0.6z m32.2-6l0.5 0.4 0.2 0.8-0.8 0.2-1.1-0.6-1.4-0.3-1 0.4 0.4 0.4 0.8 0.5-1 1-2.4 1.8-1.3 0.7-0.2-1.5 0.7-1 0.9-0.6-0.5-0.6-3-0.6 0.4-0.7-0.3-0.8-0.9-0.6-2.3-0.2-0.9-0.3-0.4-0.3 0.4-0.3 1-0.2 0.7-0.5 1.3-1.5 1.3-1.1-0.1-0.5 0.5 0.2 0.9 0.9 0.9 1.3 0.5 1.5 1.1 0.5 1.8-0.6 1.4-0.2 0.6 0.6 0.5 0.8 0.8 1z m-44.4 5.9l0.3 1 0.7 1.8-0.4 0.5-0.7-0.1-0.7-0.2-1.2-0.6-1-0.6-0.6 0.1-0.1 1-0.7 0.3-1.2-0.5-2-0.5-2.6-0.9 0-1.1 1.3-0.9-0.4-1.2-1.1-0.3-1.4 0.3-1.8-0.5-1.6-1-1-1.2-0.4-1.8-0.1-2 0.1-2.1 0.6-2.1 1-1.5 1.5-0.7 0.8-0.2 2.4-0.3 1.5 0.5 1.5 1 1.6 1.9 1.2 3.2 0.4 2.6 0.4 1.2 0.8 1 0.4 1.4 2.5 2.5z m-0.2-12.1l-0.7-0.1-0.6-0.6 0.5-1 0.7-0.9 0.9-2.1 1.9-2.5 2.7-1.5 2.8-0.7 1.7 0.3 0.6 1 0.1 1.1-0.7 0.7 0.1 0.4 1.3 0.8 1 1.1 0.9 1.4 0.2 1-1 0.1-2.8-0.8-1.2 0.3-0.7 1-3.5 1.6-1.3 1.7-0.4 1.8-0.7 0.5-0.9-1 0-1.7-0.3-1.5-0.6-0.4z m-57.2-79.3l2.6 0.9 0.3 3.5-2.7 2.5-1.5-0.6 0.9-1 0.4-0.9-0.3-0.7-3.8-2-0.6-0.3-4 0.6-1.8 0.9-2 0.3-1.6-0.6-0.8-1 0.7-0.9 2.2-0.1 2.7-1 0.5-0.7 0.5-0.4 0.1-0.7 1.7-0.5 0.6-1.1 0.1-1.2-1.1-1.4-0.4-1.7 1.4-0.7 2.4 0.5 2.4 1.3 1.7 1.7-0.2 1-1.1 0.1-2.1 1.4-0.3 0.8 0.1 0.9 0.2 0.8 0.9 0.3 1.9 0z m-14.4-30.3l0.2-0.8-0.9-0.3-3.5-0.5-0.7-0.7-1.2-0.1-0.6-0.2-0.6-0.5-0.8-0.4-0.7-0.9-1.5-3.4 0.9-1.3 1.7-0.6 1.6 0.6 1.2 0.8 1.2-0.4 1.3-0.6 0.8 0.4 0.3 0.7 0.7 0 0.8-0.3 0.4 1.1-1 1-1.2 0-0.6 0.7 0 0.8 1.5 1.6 1.3 0.5 1.4 0.1 0.8 1.2 0.4 1.5 0.7 0.9 0.2 1.3-0.5 1.6-0.5 0.4-0.4-0.5-1.5-0.4-0.7-0.8-0.5-1 0-1.5z"/>
+<path id="KR48" d="M479.7 613.6l2.9-3 0.1-4 0.9-4.5 5.7-6.8 0.8-4.5-1.9-1.3-1.4-3.2 0.2-4.2-1.5-4-0.2-2.1-0.5-1.8-3.5-1.5 0.1-4.2 1.9-3.8 1.2-5.2 1.6-5.1 2.1-3.9 1.7-3.7 0.4-5.2 1.5-4.3 3.1-2.8 2.9-3.1 2.6-5.5 1.3-0.8 1.8 0.2 3.4-1.1 6.7-3.6 1.3-3.5 5-5.3 1.1 3.7 2.7 1.6 1.3 1 1.2 1 0.2 1.4 0.5 1.3 1.1 0.5 1.1 0.4 4.1 0.3 1.8 1.5 2.2 1.5 3.9 0.3 3.8-0.1 3.5 1.2 2.6 2.8 1.8 3.5 3 2.1 0.8 1.6 0.4 1.4 2.1 1.3 1.8 2.1-0.1 4-1.6 3.7 2.1 7.7 8.4 0.4 4.1-0.6 3.9 0.7 3.7 1.7 3.5 2.6 3.8 0.8 7.3-3.7 3.7 0.7 3.3-4.8 3.2-2.4 1.1 9.2 3.4 4.2 4.2 2.7 5-0.5 5-0.9 4.5 1.3 4.2 2.2 5 0.2 4.5-3.5 1.9-0.7 2-0.3 1.8-1.6 1.6-2 4.9-2 5.2 1.3 4 1.8 3.8-1.2 0.6 6.6-3.4 6.8 2 4.1 8.4 1.3 3.5 2.7 5.8 6.7 7 3.9 3.1 2.4 0.9 4.6 3 2.9 3.8 1.4 0.6 0.5-0.6 2.2-0.3 3-0.8 1.6-0.9 1.4 0.8 2.3 0 0.9-1.5 3.1-2.2 4.6-2.4 2.9-1.3 2.7-0.2 0.5-0.3-0.6-2.7-2.8-2.5-3.1-3.1-2.6-2.4-3.3-0.8-3.7-2.6-1.7-3.5-0.1-3.2 1.3-2.5 1.9-2 2.4-1.4 9.8-1.9 2.9-2.1 2.6-1.1 2-0.6-0.6-1.3 1.9-4.1 7.3-1.9 0.1-0.1-3.4 0.1-3.1-0.9-0.2-1.2 2.7-0.9 3.9-3.4-0.4-8.9 0.2-0.5-3.1-0.9-1.6-1.3 4.6-1.3 0.7-3.2-1.4-1.5-2.8-1.6-0.2-2.1 1.6 0-7.2-0.5-0.6-1.2 0.4-1 1.6 0 2.5-2.2-1.7-1.7-2.4-1.8-1.5-2.8 1.1 0.6-2.3-1.1-3.4 0.5-1.2-1.3-4.4-0.8-0.4-1.6 1.4-1.6 2.6-0.1 1.8 1.7 3.6 1 4.4 0.6 1.5 1.1 2 2.3 3.1 0.3 1.5-0.6 2.2 1 0.2 1.7 0.7 1 0.3-1.2 0.8-1.2 0.3-2.8 0-1.4-0.4-0.4-0.8-0.1-1.1-0.4-1.1-1.3-1.4-1-0.7-7.3-2.6-2-0.1-4.5 0.8-1.2 0.6 0.1 1.2 1.5 2.2-2.5 0.5-4.6 2.4-5.4 1.4-0.7 2.1-0.2 2.3-1.5 1.5 0 1.1 13.6-7.2 2.2-0.2 0.5 3 0.8 2.1 0.3 1.9-1.1 2.2-1.7 1-2.7 0.4-2.6-0.1-1.8-0.7-0.9 1.6 0.6 0.8 1.3 0.7 0.9 1.4 0.1 0.8 0.1 1.3-0.2 3.4-1 6.8 1.2 1.2 1.2-0.4 0.9-1.3 0.5-1.7 1.8 2.2-1.9 3.4-3.4 4.5-3 0.9-4.1-0.3 0-2.5 2.7-0.1 1.1-0.2 0.7-1.1-8.5-0.9-1.7-0.7-2-2.7-0.2-1.4 1.4-0.9 3.1-1.2-3.1-6.2-2.2 2.2-2.3 4.3-3.1 0.2-2.9-3.8-1.5-1-3-0.3-1.4 0.8-0.8 2-0.2 2.6 0 2.4-2.8-0.5-6.3 0.3-2.5-1.4-0.3-0.9 0-2.4-0.2-0.6-0.6-0.2-1.5 0.3-2-0.5-3.2-0.3-1.1-0.6-0.6-1.3 0.1-1.3 0.3-1.2 0.2-1.1-0.2-12.3 0.2-2 0.4-0.9 0.7-1.2 0.6-1.6 0.2-2-2.1 2.5-1.8 3-2.1 2.2-3.3 0.3 2.5 5.8-1.7 1.2-3.7-0.1-3.5 2.2-1.4-3.9-0.9-1.7-1.5-1.1-0.4 5.3-1.4 4.2-2.9 2.5-3.6 0.4-1.4-0.6-1.3-0.3-1.1 0.1-0.8 0.8-2.1-1.7-1.4-0.4-0.3-0.7 0-3.1-1.8-4.5-8.5-9.2-1.4-3.1-1.2-3.5-3-3.1-3.4-2.5-1.8-3.3-0.6-8.8-1.3-4.2-2.8-3.3 0.7-3.6z m61.3 76.4l0.7 1.9-0.4 1.6-0.7 1.8-0.4 2.1 0.3 3.4-0.1 2-0.8 0.8-1 0.6 1.1 3.4-0.5 1.7-2.1 0.4-2-1.2-2.2-1-2.5 1.2-2.2 0.3-1.3-3.2-1.6-6.7-2.2-1.2-1.8 1.3-1.2 2.7-0.4 3.5-0.8 1.4-2 0.1-2-0.7-1.2-0.8-0.9-1.5-0.2-1.2 0-1.5-0.3-2.1-3.7-12.2-0.5-2.9 0.3-2.9 1.6-3 1-0.7 1.1-0.2 0.8-0.6 0.6-3.6 0.8-1.1 2.2-1.7 1.8-0.9 2.1 0.7 1.7 1.6 1.1 2.1-0.2 2.1-1.2 2.1-3 3.2 0.5 1.1 0.7 2.9 0.7 1.5 1.2 0.8 2.9 1 1.6 2.9 2.6-0.4 3.4-1.3 3.1-0.7 4.6 0.8 0.9 0.3z m92.1-8.9l-0.2 1.9-0.6 2.1-1.2 1.2-1.8-0.8 0.7 2.2 1.8 3.8 0.3 2.5-1 0.4-2.4-0.8-2.5-1.3-1.6-1.2-0.4 2.4-0.4 1.2-2.4 2.7-0.7 2.2 1.6 1.2 2.2 1 1.1 1.2-2.1 1.9-9.8 3-3 0.2 4.7-3.3-1.9-0.9-0.8-1.5 0.1-2 0.7-2.4-4.2 2.2-1.2-0.9-0.6-1.9 0-1.9 0.9-0.9 3.4-0.7 0.9-1.8 0.1-2.6 0.7-2.9-1.8-1.1-1.4 1.7-4.9 2.2-2.1 1.7-1.6-2.4-1.9-2.1-1.6-2.4-0.4-3.1 0.9-1.9 1.8-1.8 2-1.3 1.8-0.8 5.1-1 1.3 0 2.3 1 1.8 1.1 1.8 0.9 2.5 0.2 0-1-2.5-1.7-1.5-2.5-0.6-2.8-0.1-2.6 1.7 0.2 9.5-5.4-1.6-3 0.8-3.1 2.1-1.6 2.4 0.9 0.6 1.4 0 1.6-0.9 6.1 0.1 1 0.6 1.9 0.8 1.6 0.6 1.6 0 2.2-0.5 1.9-2.2 5.7 2.8-1 1.3-0.9 0.4 0.3 0.2 2.8z m-91.7 3.9l0.6 0.5 0.7 1.1-1.4 0.4-6.1-1.7-3.4 1.1-1.9-0.2-2.1-1.2-1.2-2.4 1-2.5 1.8-2.4 1.2-2.3 1.2-1.6 2.2-0.6 0.7 1.9-1 2.6-0.4 1.8 0.1 1.6 0.7 0.5 0.8-1.8 1.6-2.6 1.3-0.2 0.4 1.2 0.7 0.6 0.7 0.4 0.3 2 0.7 2.7 0.8 1.1z m104.4-29.2l-0.6 3.4-0.9 1.2-0.7 0.3-0.3-0.7-0.6-2.9-1.1-1.1-0.3-0.9 0.1-1.1-0.4-1.4-0.8-1.3 0.4-1.2 1.5-0.8 1.5-0.2 1.4 0.4 0.9 2.1-0.1 4.2z m-74.3 63.1l0.4 0.4-0.2 0.9-1.3 1.6-0.6 0.4-0.9 0.1-1.3-0.3-1 0.2-1.5 0.7-0.7 0.7-0.8 0.1-0.1-0.6 0.4-1-0.1-0.9-0.6-0.6-0.5-0.1-0.6-0.4 0.1-0.9 0.3-0.7 0.1-0.9 0.5-0.5 0.9-0.3 4.3 2.3 0 1 0.7 0.1 2.5-1.3z m12.4-29.7l1.3-0.6 2.1-0.5 2.3-0.1 1.4 1.3 0.3 2.1-0.7 1.3 0.5 0.8-0.6 1-1.4-0.6-0.5 0.4 0 0.4 1.1 0.2 1.2 0.9-0.6 1-1.4 1.7-2.2 0.1-1-1.3-0.5-1.3-1.2 0 0.3-1.1-0.4-1.1-1.7-0.2-0.6-0.5 1.3-1.1 0.2-1.2-1.3-1.1-2.5-0.8-1.5 0.5-0.9-0.1-0.3-1.1 1.1-1.2 1.6-0.4 2.1 0.9 1.6 1.2 0.9 0.5z m-19.8-2.7l2 2.3 0.8 1.3-0.6 0.9-1.4 0-0.7 0.3 0.1 1.2-0.4 0.5-1.3-0.4-0.8-0.4-1.5-1-0.8-1.3 0.1-0.9 1-1.5 1.8-1.4 1.7 0.4z"/>
+<path id="KR26" d="M662.1 637.3l1.1-2 2.1-2.6 1.9-2.9 1.4-9.8 2-2.4 2.5-1.9 3.2-1.3 3.5 0.1 2.6 1.7 0.8 3.7 2.4 3.3 3.1 2.6 2.5 3.1 2.7 2.8 0.3 0.6-0.7 1.4-2.1-0.1-1.5 0-2 0.3-1.4-0.1-1.4 0.6-1.7 0.2-0.1 2.4 1.1 1.6 0.2 1.9-0.7 2.2-3.1 1.4-2.4-2.1-1.5-1.2-1.1-1.4-3.6 3.8-1.6 3.1-0.5 3.2-1.1 0.8-0.6-1.7-1.7-1.7 0.2 1.5 0.3 3.4-1 0-0.5-1.1-0.6-0.3-1.4 1-1.3 0.8-0.9-1.1-1.1-3.8 0.5-3.3 1-4.3 0.2-2.4z"/>
+<path id="KR31" d="M703.6 607.1l-0.6-0.5-3.8-1.4-3-2.9-0.9-4.6-3.1-2.4-7-3.9-5.8-6.7-3.5-2.7-8.4-1.3-2-4.1 3.4-6.8-0.6-6.6 3.3-2.7 3.4-2 2.1-0.1 0.9-1.6-1.3-2.2-0.8-2.3 4.6-3.5 5.7-2 4.7-0.8 4.6 1 4.8 2.1 1.3 2 0 2.5 0.4 2.2 1.6 1.2 2.3 0.6 12.6-2.2 10.8 2.6 0.1 0 0.2 0.2 0.9 1.6-0.5 3.6-0.3 4.3-0.9 6.5-1.4 2.7-2.2 3.1-2.1 1.1-0.9-3-0.8-3.8-1.7-2.9-1.9-0.4-1.1 3.2 1.8 0.4 1.1 1.4 0.6 2.1 0.1 2.4-0.6 2.2-1.4 0.5-1.6 0.2-1.1 1 0.2 1.2 0.2 3.1 0.6 3.2-1.3 2.1-1.1 2 1.1 1.6 0.9 0.9-0.2 2.3-2.8 0.9-2.6 1.6-3.8 3.7-3.2-0.1 0 0.2z"/>
+<path id="KR47" d="M619.7 320.4l3.5 1.9 3.4 1.4 4 0.9 3.5 0.3 0.8-3.6 0.4-3.9-0.9-4.2 2.5-3 3.7-1.8 3.7 0.3 1.9 3.4 2.6 0.6 2.3 1.2-0.3 2.9 0.3 3 4.1-1.6 3.8-3 1.7 0.7 1.1 1.5 1.5 0.2 1.8-0.7 5.3 0.9 5 2.3 3.6-0.9 3.6-2 4.7 1.1 4.2 2.6 1.3 3.9-3.2 2.4-3.9-1.6-2.6 1-2.3 1.7-1 4.2 0.6 5.5 2.8 4.2 4.5 2.2 1 3.6 1.3 3.1 3.1 1.3 2.9 1.7 9.9 0.7-0.5 3.9 1.1 1.1 1.1 1.2-1.4 4.3-1.9 4.5 0.4 4.7 1.2 4.2 0.4 3.8-1.5 4 9.4 3.5 4.4-2 4.5 1.1 1.3 0 0.1 0.3 0.7 6.7 1.8 6.9 0.8 7-0.9 14.3-0.8 3.1-4.2 5.1-1.6 2.9-0.7 3.3-0.6 20.3 0.4 2.8 0.9 1.5 0.9 0.6 0.7 0.9 0.8 5.7 1 4.3 1.1 0.8 0.7 1-0.5 2.6-1.1 1.5-1.4 0.6-1.3 0.5-2.3 1.8-0.1 2.3 2.8 2.7 2.1 2.3 2.2 2.6 2.7 0.5 3.5-2.7 8.6-9.5 1.7-2.7 2.2 1.7 0.5 2.9 1 3 0.7 3.4-2.2 3.3-4.8 9.7-0.4 4.4-1.5 11.4-3.5 10 0.2 6.2-3.6 10.8-2.6 5.2-1.2 2.6 1.1 3 1.1 1.3-0.1 0-10.8-2.6-12.6 2.2-2.3-0.6-1.6-1.2-0.4-2.2 0-2.5-1.3-2-4.8-2.1-4.6-1-4.7 0.8-5.7 2-4.6 3.5 0.8 2.3 1.3 2.2-0.9 1.6-2.1 0.1-3.4 2-3.3 2.7-3.8 1.2-4-1.8-5.2-1.3-4.9 2-1.6 2-1.8 1.6-2 0.3-1.9 0.7-4.5 3.5-5-0.2-4.2-2.2-4.5-1.3-5 0.9-5 0.5-4.2-2.7-3.4-4.2-1.1-9.2-3.2 2.4-3.3 4.8-3.7-0.7-7.3 3.7-3.8-0.8-3.5-2.6-3.7-1.7-3.9-0.7-4.1 0.6-8.4-0.4-2.1-7.7 1.6-3.7 0.1-4-1.8-2.1-2.1-1.3-0.4-1.4-0.8-1.6-3-2.1-1.8-3.5-2.6-2.8-3.5-1.2-3.8 0.1-3.9-0.3-2.2-1.5-1.8-1.5-4.1-0.3-1.1-0.4-1.1-0.5-0.5-1.3-0.2-1.4-1.2-1-1.3-1-2.7-1.6-1.1-3.7 0.6-10.7-5.5-9.4 3.3-1.7 3.4-1.1 2.1-4.1 1.1-4.3 1.1-1.9 1.3-1.6 0.3-2.7-0.1-2.3-0.7-4.5 3.3-2.9 3.2 0.6 2.9 0.2-1.6-8.7-3-2.3-6.9 1.7-2.7-1.3-3.8-3.2-3.3-1.1-5.4 1.3-0.9-8 3-2.6 2-3.8-1.5-2.7-0.9-2.9 0.8-4.1 0.6-9.1 1.3-3.9 2.5-2.4-6.6-9.7-5.3-0.9-1.6-3.8 2-0.9 2-0.4 2-2.1 3-4.1 0.8-1.7-0.1-1.6 0.4-2 4.2-2.9 4.7-2.2 3-4.4 5.1 2.2 9.6 1.5-1.9-3.8-2.6-3.3 0.9-3.5 1.7-3.7 1.6-2.8 2.2 1.5 2.7-0.3 2.2-3 2.3-1.4 2.2 1.4 4.2 1.4 3.9 0.3 1-2.7 0.6-2.7 1.5-2.2 1.7-1.8 1.8 2 2.2 1.6 3.2 2.8 2.1 4.1 4.8 1.6 11.3-4.8 2-6.6-1.8-1.7-0.9-1.7 1.7-3.1 1.4-3.2 3-4.3 4.2-3 1.2-2.1 1.7-1.4 2.8-0.9 2.2-2.2 3.5-2.9 3.1-3.3 1.3-0.8 1.6 0.6 1.9-1.1 1.6-1.9z m12.4 197.8l2.1-2.2 0.7-2.6-0.1-2.9-0.2-2.6-1.5-1.3-1.1-1.6 0-4.2 0.6-1.2 0.1-1.3-1.7-3-5.5-4-7.1 0.5-8.6 1.2-6.4 5.3 0.8 7.6-2.3 2.5-1.5 3.3 1.3 0.2 1.2 0.5-0.2 1.7-0.6 1.5-2.2 0.4-2 0-1.9 2.6 0.8 3.1 2.1 0.8 2 2 1.6 3.1 2.4 1.9 1.7 1.1 1.2 1.1 1.1-0.9 1.9-3.4 1.9-1.5 4.4 0.4 7.8 2 3.1-1.8 0.4-1.6 0-1 1.3-3.4 0.1-1.4 0-1.1 1.3-0.1 1 0.3z m293.1-287l2.3 1.8-0.1 4.3-1.5 4.9-1.6 3.2-2.6 1.3-3.4-0.7-3.4-2-2.2-2.7-0.7-3.5 1.1-2.6 2.5-1.6 4.8-0.8 3.2-1.2 1.6-0.4z"/>
+<path id="KR49" d="M388.7 909l1 2.1-0.6 0.8-1.3 0.4-1 1.1 0.1 0.9 0.9 1.5 0 0.9-0.5 0.9-1.2 1.5-0.2 0.5-2.4 2.8-4.7 3.7-1.4 3.1-2 3.5-0.1 1.5-0.9 2.1-3.4 0.4-1.3 0.7-3.5-0.4-5.2 4.2-13.7 2.5-4.6 3.9-5.6 1.2-6-0.6-6.9 1.3-5.7-1.7-12.9 0.2-4 1.8-2.4 4.3-2.2 0.4-2.2-1-3-5-4.2-1.4-3.9-4.2-1.4-5.1 2.4-6.6 2.3-4.1 1.4-1.4 4.7-2.8 4-7 3.7-1 1.7-3.7 6.4-2.2 13.8-3.9 3.5-3 13.2-1.4 9-3.9 2.1 0.6 11-1.8 6.3-0.5 4.2 0.7 1.7 2.4 2 1.6 6.5 2.6 2 2 1.3 4.9 1.3 1.9 0.7-0.8 0.8-0.7 0.4-0.7z"/>
+<path id="KR11" d="M411.7 230.4l3.7 0 3.2-1.2 2.8 0 1 2.5-0.4 2.5-1.9 1-2 1.4 0 3 1.1 1.3-2.3 3.1-1.3 2.3-3.5 2.1-3.9 0.9-4 2-1.5-3.6-3.4 0.8-3.4 1-2.4 1.4-2.4 0.4-5.8-0.2-4-5.2-4-1.2-2.7-1.8-0.7-4.9-2.7-3.8-3.2-4 2.1-4.3 3.8 0.2 4.3 2.7 3.2-1.1 2.9-1.8 0.2-2.9 0.8-2.7 6.1-0.6 3.1-4 1.9-4.1 2.7-2.9 4.3-1 4.8 0.4 2.4 4 0.9 5.5 1.4 3.8 0.1 4.2-1.3 4.8z"/>
+<path id="KR30" d="M461.4 430l-0.7 3.9-1.8 2.9-1.9 7.3-3.6 2.8-1.9 0.7-5.9 4.4-6.7 1.7-2.8-9.1-0.7-12.2-2.5-4.8-7.2-11.4 6.2-1.7 8.8-2.4 3.1 0.3-0.3 1.2 0.5 1.3 0.9 1 1.2 0.6 0.8 1.9-0.5 2.9 4.1 1.2 4.3-1 1.6-2.3 1.9 0.5-0.2 1.9 1.6 0.9 0.3 3 1.4 4.5z"/>
+<path id="KR50" d="M425.7 416.2l-9.3 2.5-12.3-2.4 1.2-3.5 2.1-2-0.4-25.6 3.1-8.7 19.3 7.7-2.6 5.7 0.2 2.9-1.7 4.8-0.6 5.2 10-2 10.3 0.7-0.1 1.8-0.7 1.6-0.3 1.3 0.5 1 0.1 0.9 0.1 0.9-0.2 1.7-0.6 1.7-3.1-0.3-8.8 2.4-6.2 1.7z"/>
+<path id="KR43" d="M478.3 301.9l14.3-3.9 14.4-2-1.1 8.2 4.1-1 4.1 0.3 1.2 0.7 1.1 0.6 1.1-0.9 0.9-1.1 2.8-1.9-0.8-8.3 2.6-3.1 6.9-2.4 5.1 5.5 0 3.6 1.7 2.4 4.5-1.1 4.5-2.5 2.7-2.1 3.3 0.7 2.6-1.4 3.2-2.4 7.5 2.7 7.8 1.2 2.4 0.7-1.6 3.6-3.9 2.8-2.3 3.6 1.5 1.7 1.9 1 1.2 0.1 1.3-0.6 4.1-1.4 6.4-0.7 1.4 1.4-0.3 2.5 2.7 2.8 1 2.2 2.5-0.2 2.9-0.5 3.3-1 3.2-0.1 3.2 2.5 3.6 2.3 3.5 0.7 3.5 0.4 2.7 1.2 2.7 1.7-1.6 1.9-1.9 1.1-1.6-0.6-1.3 0.8-3.1 3.3-3.5 2.9-2.2 2.2-2.8 0.9-1.7 1.4-1.2 2.1-4.2 3-3 4.3-1.4 3.2-1.7 3.1 0.9 1.7 1.8 1.7-2 6.6-11.3 4.8-4.8-1.6-2.1-4.1-3.2-2.8-2.2-1.6-1.8-2-1.7 1.8-1.5 2.2-0.6 2.7-1 2.7-3.9-0.3-4.2-1.4-2.2-1.4-2.3 1.4-2.2 3-2.7 0.3-2.2-1.5-1.6 2.8-1.7 3.7-0.9 3.5 2.6 3.3 1.9 3.8-9.6-1.5-5.1-2.2-3 4.4-4.7 2.2-4.2 2.9-0.4 2 0.1 1.6-0.8 1.7-3 4.1-2 2.1-2 0.4-2 0.9 1.6 3.8 5.3 0.9 6.6 9.7-2.5 2.4-1.3 3.9-0.6 9.1-0.8 4.1 0.9 2.9 1.5 2.7-2 3.8-3 2.6 0.9 8 5.4-1.3 3.3 1.1 3.8 3.2 2.7 1.3 6.9-1.7 3 2.3 1.6 8.7-2.9-0.2-3.2-0.6-3.3 2.9 0.7 4.5 0.1 2.3-0.3 2.7-1.3 1.6-1.1 1.9-1.1 4.3-2.1 4.1-3.4 1.1-3.3 1.7-1.8 1.8-1.7 1.6-2-1.1-2-1.9-5 2.3-4.3 2.6-2.2-0.6-1.3-1.6-6-2-2.1-2.4-2.3-1.3-0.8 1.2-1.1 0.2-1.3-1.2-1.2-1.4-3.1-4.8-2.7-4.9-1.2-5.7 0.2-5.8-1.4-5-4.2-2.6-4-1.3-4.4 0.9-0.3-4.8 0.2-4.6 1.6-6.5 3.1-5.5 1.2-2.9 1.4-2.5 2.2-1.6 0.6-3-1.8-0.5-1.9-0.9-2.2 1.7-1.8 2.4-1.4-4.5-0.3-3-1.6-0.9 0.2-1.9-1.9-0.5-1.6 2.3-4.3 1-4.1-1.2 0.5-2.9-0.8-1.9-1.2-0.6-0.9-1-0.5-1.3 0.3-1.2 0.6-1.7 0.2-1.7-0.1-0.9-0.1-0.9-0.5-1 0.3-1.3 0.7-1.6 0.1-1.8-10.3-0.7-10 2 0.6-5.2 1.7-4.8-0.2-2.9 2.6-5.7 3.8-5.5 2.8-4.9 1.2-1.3 1.3 0.2 1.2-0.3 0.7-1.3 0.2-1.5 0.4-1.8 0.7-1.8 0.3-1.9-0.3-1.9-0.9-1.7-1.1-1.1 0.1-3.4-1.8-1.3-2.3-4.7-1.8-1-1.6-1.7-1.1-2.5 6.1-1.8 5.8-2.8 4.5-1.5 1.2-5 2.2-2.4 3.5-1.5 1.6-2.1 1.2-2.9 2.1-2.2 2.6 0.6 0.8 1 3.4-2.4 6.5-12.1 0.6-1.4 0.8-1.3 1.1-0.9 1-0.7 1.1-1.7 1-1.8z"/>
+<path id="KR29" d="M394 619.8l2.8 7.6-5.4 7.2-8.3-1.4-7.4-4.4-3.7-8.2 2.9-2.7 4.9 1.2 3.5-0.8 3.7-1.1 7 2.6z"/>
+<path id="KR27" d="M632.1 518.2l-1-0.3-1.3 0.1 0 1.1-0.1 1.4-1.3 3.4 0 1-0.4 1.6-3.1 1.8-7.8-2-4.4-0.4-1.9 1.5-1.9 3.4-1.1 0.9-1.2-1.1-1.7-1.1-2.4-1.9-1.6-3.1-2-2-2.1-0.8-0.8-3.1 1.9-2.6 2 0 2.2-0.4 0.6-1.5 0.2-1.7-1.2-0.5-1.3-0.2 1.5-3.3 2.3-2.5-0.8-7.6 6.4-5.3 8.6-1.2 7.1-0.5 5.5 4 1.7 3-0.1 1.3-0.6 1.2 0 4.2 1.1 1.6 1.5 1.3 0.2 2.6 0.1 2.9-0.7 2.6-2.1 2.2z"/>
+</g>
+<g class="kr-pins" id="krPins"><g><circle class="halo" cx="395" cy="229" r="14"/><circle class="dot" cx="395" cy="229" r="5.5"/></g><g><circle class="halo" cx="338" cy="246" r="14"/><circle class="dot" cx="338" cy="246" r="5.5"/></g><g><circle class="halo" cx="561" cy="218" r="14"/><circle class="dot" cx="561" cy="218" r="5.5"/></g><g><circle class="halo" cx="444" cy="433" r="14"/><circle class="dot" cx="444" cy="433" r="5.5"/></g><g><circle class="halo" cx="615" cy="512" r="14"/><circle class="dot" cx="615" cy="512" r="5.5"/></g><g><circle class="halo" cx="677" cy="633" r="14"/><circle class="dot" cx="677" cy="633" r="5.5"/></g><g><circle class="halo" cx="384" cy="626" r="14"/><circle class="dot" cx="384" cy="626" r="5.5"/></g><g><circle class="halo" cx="407" cy="542" r="14"/><circle class="dot" cx="407" cy="542" r="5.5"/></g><g><circle class="halo" cx="336" cy="925" r="14"/><circle class="dot" cx="336" cy="925" r="5.5"/></g></g>
+</svg>
+      </div>
+      <div>
+        <div class="loc-note">
+          <p>전국 <b>29개</b> 지점 · 현재 <b>9곳</b> 안내</p>
+        </div>
+        <div class="branch-links">
+          <a href="https://naver.me/xnO57cVJ" target="_blank" rel="noopener">지점 01 ↗</a>
+          <a href="https://naver.me/xAAYLlsO" target="_blank" rel="noopener">지점 02 ↗</a>
+          <a href="https://naver.me/x6xvkdyU" target="_blank" rel="noopener">지점 03 ↗</a>
+          <a href="https://naver.me/517wntyh" target="_blank" rel="noopener">지점 04 ↗</a>
+          <a href="https://naver.me/GScMO6cr" target="_blank" rel="noopener">지점 05 ↗</a>
+          <a href="https://naver.me/GOPKK35H" target="_blank" rel="noopener">지점 06 ↗</a>
+          <a href="https://naver.me/56XeK9SJ" target="_blank" rel="noopener">지점 07 ↗</a>
+          <a href="https://naver.me/G2YhJhl5" target="_blank" rel="noopener">지점 08 ↗</a>
+          <a href="https://naver.me/FkaApCRt" target="_blank" rel="noopener">지점 09 ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY / YOUTUBE -->
+<section id="story" class="story reveal">
+  <div class="wrap">
+    <a class="yt" href="https://www.youtube.com/watch?v=n8ARX3YiGSg" target="_blank" rel="noopener" aria-label="유튜브 최신 영상 보기">
+      <img class="thumb" src="./assets/yt-latest.jpg" alt="그냥 이선기 유튜브 최신 영상 썸네일" width="1280" height="720" loading="lazy" decoding="async">
+      <div class="play" aria-hidden="true"></div>
+      <div class="ch"><b>그냥 이선기</b>대표가 직접 운영하는 채널</div>
+    </a>
+    <div>
+      <div class="label">Brand Story</div>
+      <h2 style="font-family:var(--display-ko);font-weight:700;font-size:clamp(28px,4.2vw,50px);line-height:1.2;margin:20px 0 22px;letter-spacing:-.01em">사람과 브랜드를<br>리메이드 합니다</h2>
+      <p style="color:#c4cec3;font-size:15.5px;line-height:1.78;max-width:480px;margin:0 0 26px">REMADE COMPANY는 뷰티 프랜차이즈와 1인샵을 위한 뷰티 브랜드 마케팅 컴퍼니입니다. 고객 본연의 아름다움을 ‘새로이’ 창조하는 반영구 브랜드로 출발해, 전국 지점을 거치며 쌓은 경험과 가치로 리메이드만의 ‘성공보장 상승곡선’에 오르는 브랜드 마케팅 레시피를 전수합니다.</p>
+      <a href="https://www.youtube.com/channel/UCSjCj_GHDSc3fVB0bPWFCEQ" target="_blank" rel="noopener" class="btn btn-ghost">유튜브에서 보기 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOUNDER / B2B -->
+<section id="founder" class="founder reveal">
+  <div class="wrap">
+    <div class="label">Become a Partner</div>
+    <h2 style="font-size:clamp(25px,3.8vw,44px);line-height:1.3">창업에는 노하우가,<br>창업 이후엔 운영이,<br>운영에는 <span class="g">마케팅</span>이 필요합니다</h2>
+    <p style="color:#c4cec3;font-size:16px;line-height:1.7;max-width:560px;margin:0 auto 32px">REMADE는 시술부터 운영·마케팅까지, 현장에서 검증한 시스템을 함께 만듭니다. 당신의 매장을 ‘브랜드’로.</p>
+    <div class="cta-row">
+      <a href="#booking" class="btn btn-primary">파트너 상담 신청</a>
+      <a href="#story" class="btn btn-ghost">브랜드 스토리 보기</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="booking" class="ts-footer">
+  <div class="wrap">
+
+    <div class="foot-cols">
+      <div class="fc">
+        <div class="label">Contact</div>
+        <a href="mailto:hello@remade.kr">hello@remade.kr</a>
+        <span>예약 · 창업·교육 상담</span>
+      </div>
+      <div class="fc">
+        <div class="label">Studios</div>
+        <a href="#locator">전국 29개 지점 →</a>
+        <span>현재 9곳 온라인 안내</span>
+      </div>
+      <div class="fc">
+        <div class="label">Connect</div>
+        <a href="https://www.youtube.com/channel/UCSjCj_GHDSc3fVB0bPWFCEQ" target="_blank" rel="noopener">YouTube</a>
+        <a href="#">Instagram</a>
+        <a href="#">Threads</a>
+      </div>
+      <div class="fc">
+        <div class="label">Address</div>
+        <span>강남 본점 · 신논현역 3번 출구</span>
+        <span>운영 10:00–20:00</span>
+      </div>
+    </div>
+
+    <div class="foot-wordmark" aria-hidden="true">REMADE<span class="foot-mark"></span></div>
+
+    <div class="foot-bottom">
+      <span>© REMADE. All rights reserved.</span>
+      <span>(주)리메이드 · 대표 이선기 · 사업자정보 표시 영역</span>
+      <a href="#top">맨 위로 ↑</a>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  // nav solidify
+  var nav=document.getElementById('nav');
+  addEventListener('scroll',function(){nav.classList.toggle('solid',scrollY>40)},{passive:true});
+  // mobile menu toggle
+  (function(){
+    var burger=document.getElementById('burger'),menu=document.getElementById('mobileMenu');
+    if(!burger||!menu)return;
+    function setOpen(open){
+      nav.classList.toggle('open',open);
+      burger.setAttribute('aria-expanded',open?'true':'false');
+      burger.setAttribute('aria-label',open?'메뉴 닫기':'메뉴 열기');
+      burger.textContent=open?'✕':'☰';
+    }
+    burger.addEventListener('click',function(){setOpen(!nav.classList.contains('open'));});
+    menu.addEventListener('click',function(e){if(e.target.tagName==='A')setOpen(false);});
+    addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){setOpen(false);burger.focus();}});
+  })();
+  // reveal
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  // INTRO scroll word-cycle: REMADE→Brows→Lips→Brand (bg crossfades, word swaps cleanly)
+  (function(){
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var intro=document.getElementById('top'),hint=document.getElementById('scrollHint'),navEl=document.getElementById('nav');
+    var bgs=document.querySelectorAll('.h-bg'),words=document.querySelectorAll('.h-word');
+    if(reduce){navEl&&navEl.classList.add('show');return;}
+    if(!intro||!bgs.length)return;
+    var n=bgs.length,seg=1/(n-1),H=0.30,F=0.20,K=58,ticking=false;
+    function frame(){
+      ticking=false;
+      var total=intro.offsetHeight-innerHeight;if(total<=0)return;
+      var p=Math.min(1,Math.max(0,(-intro.getBoundingClientRect().top)/total));
+      for(var i=0;i<n;i++){
+        // background: smooth linear crossfade
+        bgs[i].style.opacity=Math.max(0,1-Math.abs(p-i*seg)/seg).toFixed(3);
+        // word: hold (plateau) then quick fade + slight upward slide → clean swap
+        var local=(p-i*seg)/seg,a=Math.abs(local);
+        var wo=a<=H?1:Math.max(0,1-(a-H)/F);
+        var w=words[i];
+        w.style.opacity=wo.toFixed(3);
+        w.style.transform='translateY('+(-local*K).toFixed(1)+'px)';
+      }
+      navEl&&navEl.classList.toggle('show',p>0.12);
+      if(hint)hint.style.opacity=Math.max(0,1-p*6).toFixed(2);
+    }
+    function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame);}}
+    addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);frame();
+  })();
+</script>
+</body>
+</html>
