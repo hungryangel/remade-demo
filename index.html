@@ -77,8 +77,8 @@
   .nav-right{display:flex;align-items:center;gap:20px}
   .nav-cta{font-size:13px;border:1px solid var(--green);color:var(--green-bright);padding:9px 18px;border-radius:2px;transition:.25s}
   .nav-cta:hover{background:var(--green);color:#04120A}
-  .burger{display:none;background:none;border:0;color:var(--paper);font-size:22px;cursor:pointer;width:44px;height:44px;align-items:center;justify-content:center;border-radius:4px;transition:color .25s}
-  .burger:hover{color:var(--green-bright)}
+  .burger{display:none;background:none;border:0;color:var(--green-bright);font-size:22px;cursor:pointer;width:44px;height:44px;align-items:center;justify-content:center;border-radius:4px;transition:color .25s}
+  .burger:hover{color:#fff}
   /* mobile dropdown menu */
   .mobile-menu{display:none;flex-direction:column;background:rgba(7,10,7,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
   nav.open .mobile-menu{display:flex}
@@ -182,7 +182,8 @@
 
   /* STORY / YOUTUBE */
   .story .wrap{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
-  .yt{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:linear-gradient(135deg,#0c150c,#0a2414);display:flex;align-items:center;justify-content:center;transition:.3s}
+  .yt{position:relative;aspect-ratio:16/9;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:linear-gradient(135deg,#0c150c,#0a2414);display:flex;align-items:center;justify-content:center;transition:.3s;cursor:pointer}
+  .yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0;z-index:3}
   .yt:hover{border-color:var(--green)}
   .yt .thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;filter:saturate(.92) brightness(.82);transition:transform .5s,filter .3s}
   .yt:hover .thumb{transform:scale(1.04);filter:saturate(1) brightness(.9)}
@@ -424,11 +425,11 @@
 <!-- STORY / YOUTUBE -->
 <section id="story" class="story reveal">
   <div class="wrap">
-    <a class="yt" href="https://www.youtube.com/watch?v=n8ARX3YiGSg" target="_blank" rel="noopener" aria-label="유튜브 최신 영상 보기">
+    <div class="yt" id="ytPlayer" data-id="n8ARX3YiGSg" role="button" tabindex="0" aria-label="유튜브 최신 영상 재생">
       <img class="thumb" src="./assets/yt-latest.jpg" alt="그냥 이선기 유튜브 최신 영상 썸네일" width="1280" height="720" loading="lazy" decoding="async">
       <div class="play" aria-hidden="true"></div>
       <div class="ch"><b>그냥 이선기</b>대표가 직접 운영하는 채널</div>
-    </a>
+    </div>
     <div>
       <div class="label">Brand Story</div>
       <h2 style="font-family:var(--display-ko);font-weight:700;font-size:clamp(28px,4.2vw,50px);line-height:1.2;margin:20px 0 22px;letter-spacing:-.01em">사람과 브랜드를<br>리메이드 합니다</h2>
@@ -511,6 +512,22 @@
   // reveal
   var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el){io.observe(el)});
+  // YouTube inline play (load iframe on click, autoplay in place)
+  (function(){
+    var yt=document.getElementById('ytPlayer');if(!yt)return;
+    function play(){
+      if(yt.querySelector('iframe'))return;
+      var id=yt.getAttribute('data-id');
+      var f=document.createElement('iframe');
+      f.src='https://www.youtube.com/embed/'+id+'?autoplay=1&rel=0&playsinline=1';
+      f.title='그냥 이선기 유튜브 영상';
+      f.allow='autoplay; encrypted-media; picture-in-picture; web-share';
+      f.setAttribute('allowfullscreen','');
+      yt.innerHTML='';yt.appendChild(f);
+    }
+    yt.addEventListener('click',play);
+    yt.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();play();}});
+  })();
   // INTRO scroll word-cycle: REMADE→Brows→Lips→Brand (bg crossfades, word swaps cleanly)
   (function(){
     var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
