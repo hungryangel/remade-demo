@@ -125,10 +125,10 @@
   .manifesto blockquote{font-family:var(--display-ko);font-weight:700;font-size:clamp(28px,4vw,50px);line-height:1.32;letter-spacing:-.01em;color:var(--green-bright)}
   .manifesto blockquote .g{color:#fff}
   .lightwall{aspect-ratio:1/1.05;border:1px solid rgba(98,220,140,.28);border-radius:3px;position:relative;overflow:hidden;background:radial-gradient(120% 90% at 50% 56%,rgba(98,220,140,.45),rgba(43,163,80,.2) 44%,rgba(12,40,22,.12) 78%,#070A07 100%)}
-  .lightwall::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background-image:var(--grain);background-size:140px 140px;opacity:.38;mix-blend-mode:overlay}
+  .lightwall::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background-image:var(--grain);background-size:130px 130px;opacity:.55;mix-blend-mode:overlay}
   .lightwall .m{position:absolute;left:0;right:0;bottom:15%;z-index:2;text-align:center;font-family:var(--lat);font-size:clamp(28px,4vw,46px);letter-spacing:.2em;font-weight:600;color:#06210F;padding-left:.2em}
   /* site-wide subtle film grain */
-  body::after{content:"";position:fixed;inset:0;z-index:130;pointer-events:none;background-image:var(--grain);background-size:140px 140px;opacity:.07;mix-blend-mode:overlay}
+  body::after{content:"";position:fixed;inset:0;z-index:130;pointer-events:none;background-image:var(--grain);background-size:130px 130px;opacity:.14}
 
   /* MENU — editorial index: number · name · time */
   .menu-list{border-top:1px solid var(--line)}
@@ -203,12 +203,12 @@
   /* FOOTER — Typography-Seoul-style editorial, all black + green */
   .ts-footer{position:relative;background:var(--canvas);color:var(--paper);padding:104px 0 38px;overflow:hidden;border-top:1px solid var(--line)}
   /* ambient green glow — bottom + both sides (store-lightbox mood) */
-  .ts-footer::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;transform-origin:50% 116%;will-change:transform,opacity;animation:footGlow 9s ease-in-out infinite alternate;
+  .ts-footer::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;transform-origin:50% 116%;will-change:transform,opacity;animation:footGlow 7s ease-in-out infinite alternate;
     background:
       radial-gradient(145% 70% at 50% 124%, rgba(170,246,108,.55), rgba(120,230,120,.28) 34%, rgba(43,163,80,.10) 56%, transparent 72%),
       radial-gradient(52% 88% at -6% 110%, rgba(170,246,108,.42), rgba(98,220,140,.16) 45%, transparent 64%),
       radial-gradient(52% 88% at 106% 110%, rgba(170,246,108,.42), rgba(98,220,140,.16) 45%, transparent 64%);}
-  @keyframes footGlow{from{transform:scale(1);opacity:.78}to{transform:scale(1.13);opacity:1}}
+  @keyframes footGlow{from{transform:scale(.92);opacity:.5}to{transform:scale(1.32);opacity:1}}
   .ts-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;pointer-events:none;z-index:0;
     background:linear-gradient(90deg,transparent,rgba(170,246,108,.8) 28%,rgba(205,255,150,1) 50%,rgba(170,246,108,.8) 72%,transparent);
     filter:blur(.3px);opacity:1}
