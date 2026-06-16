@@ -229,6 +229,7 @@
 
   @media(max-width:920px){
     .nav-mid{display:none}.burger{display:block}
+    .nav-cta{display:none}
     .manifesto .wrap,.loc-grid,.story .wrap{grid-template-columns:1fr;gap:34px}
     .lightwall{max-width:300px;margin:0 auto}
     .foot-cols{grid-template-columns:1fr 1fr;gap:26px}
@@ -239,6 +240,13 @@
     .gallery-wall{column-count:2;column-gap:14px}
     .frame{margin-bottom:14px}
     .menu-item{gap:18px;padding:22px 4px}
+    /* campaign image full-bleed on mobile */
+    .campaign-fig{margin:0 -36px}
+    .campaign-img{border:0;border-radius:0}
+    /* center all section headings on mobile (like Become a Partner) */
+    .sec-head,.port-head,.manifesto .wrap>div,#story .wrap>div,.campaign{text-align:center}
+    .sec-head .label,.port-head .label,.manifesto .label,#story .label,.campaign .label{justify-content:center}
+    .port-head{flex-direction:column;align-items:center}
   }
   @media(max-width:560px){
     .gallery-wall{column-count:1}
