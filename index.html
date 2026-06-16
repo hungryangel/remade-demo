@@ -201,23 +201,23 @@
   .founder .cta-row{justify-content:center}
 
   /* FOOTER — Typography-Seoul-style editorial, all black + green */
-  .ts-footer{position:relative;background:var(--canvas);color:var(--paper);padding:104px 0 38px;overflow:hidden;border-top:1px solid var(--line)}
+  .ts-footer{position:relative;background:var(--canvas);color:var(--paper);overflow:hidden;border-top:1px solid var(--line);min-height:100svh}
   /* ambient green glow — bottom + both sides (store-lightbox mood) */
-  .ts-footer::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;transform-origin:50% 116%;will-change:transform,opacity;animation:footGlow 7s ease-in-out infinite alternate;
+  .ts-footer::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;transform-origin:50% 50%;will-change:transform,opacity;animation:footGlow 7s ease-in-out infinite alternate;
     background:
       radial-gradient(145% 70% at 50% 124%, rgba(170,246,108,.55), rgba(120,230,120,.28) 34%, rgba(43,163,80,.10) 56%, transparent 72%),
       radial-gradient(52% 88% at -6% 110%, rgba(170,246,108,.42), rgba(98,220,140,.16) 45%, transparent 64%),
       radial-gradient(52% 88% at 106% 110%, rgba(170,246,108,.42), rgba(98,220,140,.16) 45%, transparent 64%);}
-  @keyframes footGlow{from{transform:scale(.92);opacity:.5}to{transform:scale(1.32);opacity:1}}
+  @keyframes footGlow{from{transform:scale(1);opacity:.5}to{transform:scale(1.18);opacity:1}}
   .ts-footer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;pointer-events:none;z-index:0;
     background:linear-gradient(90deg,transparent,rgba(170,246,108,.8) 28%,rgba(205,255,150,1) 50%,rgba(170,246,108,.8) 72%,transparent);
     filter:blur(.3px);opacity:1}
-  .ts-footer .wrap{position:relative;z-index:1}
+  .ts-footer .wrap{position:relative;z-index:1;min-height:100svh;display:flex;flex-direction:column;justify-content:space-between;padding-top:92px;padding-bottom:38px}
   .foot-cols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px;border-bottom:1px solid var(--line);padding-bottom:60px}
   .fc .label{margin-bottom:20px}
   .fc a,.fc span{display:block;font-size:14px;color:#9aa89a;margin-bottom:10px;transition:color .2s}
   .fc a:hover{color:var(--green-bright)}
-  .foot-wordmark{font-family:var(--lat);font-weight:600;font-size:clamp(46px,19vw,250px);line-height:.9;letter-spacing:.02em;color:var(--green-bright);text-align:center;white-space:nowrap;padding:34px 0 6px;position:relative;text-shadow:0 0 60px rgba(98,220,140,.25)}
+  .foot-wordmark{font-family:var(--lat);font-weight:600;font-size:clamp(50px,21.2vw,360px);line-height:.84;letter-spacing:.005em;color:var(--green-bright);text-align:center;white-space:nowrap;padding:0;position:relative;width:100vw;margin-left:50%;transform:translateX(-50%);text-shadow:0 0 60px rgba(98,220,140,.25)}
   .foot-wordmark .foot-mark{display:inline-block;width:.26em;height:.28em;vertical-align:baseline;margin-left:.04em;border-radius:1px;background:repeating-linear-gradient(106deg,var(--green-bright) 0 .03em,transparent .03em .085em)}
   /* velnoc demo badge (floating, bottom-left) */
   .demo-flag{position:fixed;left:16px;bottom:16px;z-index:90;display:inline-flex;align-items:center;gap:7px;font-size:11px;letter-spacing:.04em;color:#94a294;background:rgba(13,17,13,.9);border:1px solid var(--line);border-radius:30px;padding:8px 15px;backdrop-filter:blur(8px);transition:border-color .25s,color .25s,transform .25s}
